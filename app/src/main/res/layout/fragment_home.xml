@@ -12,7 +12,7 @@
         android:layout_width="291dp"
         android:layout_height="295dp"
         android:progressTint="#00FF00"
-        android:rotation="119"
+        android:rotation="118"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
