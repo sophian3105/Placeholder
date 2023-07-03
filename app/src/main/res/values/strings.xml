@@ -12,4 +12,6 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="hello_home">Hello, Home!</string>
+
+    <string name="camera_button_description">Open camera</string>
 </resources>
