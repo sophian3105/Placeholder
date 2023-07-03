@@ -1,8 +1,13 @@
 package com.example.placeholder
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var takePictureLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,10 +33,21 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+
+        // OPEN CAMERA PLEASE
+        takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                if (result.data != null) {
+                    val imageBitmap = result.data!!.extras?.get("data") as Bitmap?
+                    // Use the captured image
+                }
+            }
         }
+
+        binding.appBarMain.openCamera.setOnClickListener {
+            openCamera()
+        }
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -54,4 +72,15 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+    private fun openCamera() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            takePictureLauncher.launch(takePictureIntent)
+        } else {
+            Toast.makeText(this, "No camera app available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }
