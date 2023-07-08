@@ -28,6 +28,8 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // The following replaces the manually placed text box 'android:id="@+id/textHome"' with the text from HomeViewModel.kt
+        // If this is removed, then HomeViewModel.kt does nothing
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
