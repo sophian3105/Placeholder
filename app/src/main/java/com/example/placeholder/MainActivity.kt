@@ -1,13 +1,8 @@
 package com.example.placeholder
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.Menu
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,8 +18,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var takePictureLauncher: ActivityResultLauncher<Intent>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,18 +27,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
 
-        // OPEN CAMERA PLEASE
-        takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                if (result.data != null) {
-                    val imageBitmap = result.data!!.extras?.get("data") as Bitmap?
-                    // Use the captured image
-                }
-            }
-        }
-
+        // Camera Button
         binding.appBarMain.openCamera.setOnClickListener {
-            openCamera()
+            // Open the camera activity - does not close this activity as of now
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivity(intent)
         }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -72,15 +58,4 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-    private fun openCamera() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            takePictureLauncher.launch(takePictureIntent)
-        } else {
-            Toast.makeText(this, "No camera app available", Toast.LENGTH_SHORT).show()
-        }
-    }
-
 }
