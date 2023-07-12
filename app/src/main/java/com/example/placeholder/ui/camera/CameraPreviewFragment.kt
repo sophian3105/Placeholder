@@ -1,5 +1,6 @@
 package com.example.placeholder.ui.camera
 
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,8 +23,15 @@ class CameraPreviewFragment : Fragment() {
         _binding = FragmentCameraPreviewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // Use cameraPreviewViewModel for any ViewModel accessing here
 
         return root
     }
+
+
+
+
+
+
+
+
 }
