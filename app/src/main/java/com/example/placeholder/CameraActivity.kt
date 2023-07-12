@@ -41,6 +41,7 @@ class CameraActivity : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         requestPermissions()
 
+        // On click, take and store a picture
         binding.captureButton.setOnClickListener{
             captureImage()
         }
@@ -82,8 +83,6 @@ class CameraActivity : AppCompatActivity() {
     private fun startCamera(){
         val processCameraProvider = ProcessCameraProvider.getInstance(this)
         processCameraProvider.addListener({
-
-
             try {
                 val cameraProvider = processCameraProvider.get()
 
@@ -105,6 +104,9 @@ class CameraActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Get the intended output directory to store images
+     */
     private fun getOutputDirectory(): File{
         val mediaDir = externalMediaDirs.firstOrNull()?.let{mFile ->
             File(mFile, resources.getString(R.string.app_name)).apply {
@@ -115,6 +117,10 @@ class CameraActivity : AppCompatActivity() {
         return if (mediaDir != null && mediaDir.exists())
             mediaDir else filesDir
     }
+
+    /**
+     * To store images to storage
+     */
     private fun captureImage() {
         val imageCapture = imageCapture?: return
         val photoFile = File(
@@ -139,11 +145,16 @@ class CameraActivity : AppCompatActivity() {
         )
     }
 
-    // Helper function to build new CameraX previewView
+    /**
+     * Helper function to build new CameraX previewView
+     */
     private fun buildCameraPreviewUseCase(): Preview {
         return Preview.Builder().build().also {it.setSurfaceProvider(binding.cameraPreviewView.surfaceProvider) }
     }
 
+    /**
+     * Destroy unused resources when closed
+     */
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
