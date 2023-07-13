@@ -44,9 +44,11 @@ class CameraActivity : AppCompatActivity() {
         // On click, take and store a picture
         binding.captureButton.setOnClickListener{
             captureImage()
+            // goToDocuScan()
         }
         binding.openGalleryButton.setOnClickListener{
-
+            // openGallery()
+            // goToDocuScan()
         }
 
         // Open the new CameraPreviewFragment (replace the activity screen with a fragment)

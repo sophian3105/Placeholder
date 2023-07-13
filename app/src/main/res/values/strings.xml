@@ -16,6 +16,6 @@
     <string name="amount_saved">Amount Saved</string>
 
     <string name="camera_button_description">Open camera</string>
-    <string name="capture_image_button">Capture image button</string>
-    <string name="open_gallery_button">Open gallery button</string>
+    <string name="capture_image_description">Capture image</string>
+    <string name="open_gallery_description">Open gallery</string>
 </resources>

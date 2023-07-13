@@ -15,7 +15,7 @@
 
     <ImageButton
         android:id="@+id/openGalleryButton"
-        android:contentDescription="@string/open_gallery_button"
+        android:contentDescription="@string/open_gallery_description"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
 
     <ImageButton
         android:id="@+id/captureButton"
-        android:contentDescription="@string/capture_image_button"
+        android:contentDescription="@string/capture_image_description"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
