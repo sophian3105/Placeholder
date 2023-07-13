@@ -45,6 +45,9 @@ class CameraActivity : AppCompatActivity() {
         binding.captureButton.setOnClickListener{
             captureImage()
         }
+        binding.openGalleryButton.setOnClickListener{
+
+        }
 
         // Open the new CameraPreviewFragment (replace the activity screen with a fragment)
 //        val fragment = CameraPreviewFragment()
