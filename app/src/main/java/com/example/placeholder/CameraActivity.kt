@@ -124,10 +124,13 @@ class CameraActivity : AppCompatActivity() {
      */
     private fun captureImage() {
         val imageCapture = imageCapture?: return
+
+        val photoName = SimpleDateFormat("yy-MM-dd-HH-mm-ss-SSS", Locale.getDefault()).format(System.currentTimeMillis()) + ".png"
         val photoFile = File(
             outputDirectory,
-            SimpleDateFormat("yy-MM-dd-HH-mm-ss-SSS", Locale.getDefault()).format(System.currentTimeMillis()) + ".jpg"
+            photoName
         )
+
         val outputOption = ImageCapture.OutputFileOptions.Builder(photoFile).build()
         
         imageCapture.takePicture(
