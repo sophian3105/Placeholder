@@ -15,7 +15,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.placeholder.databinding.ActivityCameraBinding
-import com.example.placeholder.ui.camera.CameraPreviewFragment
+import com.example.placeholder.ui.camera.ImageConfirmFragment
 import java.io.File
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -39,31 +39,27 @@ class CameraActivity : AppCompatActivity() {
         // CameraX Operations
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
-        requestPermissions()
+        requestPermissionsForCamera() // Starts camera when permissions given
 
         // On click, take and store a picture
         binding.captureButton.setOnClickListener{
             captureImage()
-            // goToDocuScan()
+            // on complete image selection -> openProcessImageFragment()
         }
         binding.openGalleryButton.setOnClickListener{
             // openGallery()
-            // goToDocuScan()
+            openImageConfirmFragment()
+            // on complete image selection -> openProcessImageFragment()
         }
 
-        // Open the new CameraPreviewFragment (replace the activity screen with a fragment)
-//        val fragment = CameraPreviewFragment()
-//        supportFragmentManager.beginTransaction()
-//            .replace(binding.drawerCameraLayout.id, fragment)
-//            //.addToBackStack(null) <- Uncomment if want an extra 'back' step for back button
-//            .commit()
+
     }
 
     /**
      * To request permissions for the camera
      * If received, open camera
      */
-    private fun requestPermissions() {
+    private fun requestPermissionsForCamera() {
         requestPermissionsIfMissing { granted ->
             if (granted)
                 startCamera()
@@ -80,6 +76,20 @@ class CameraActivity : AppCompatActivity() {
         else registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             onResult(it)
         }.launch(Manifest.permission.CAMERA)
+    }
+
+    /**
+     * Get the intended output directory to store images
+     */
+    private fun getOutputDirectory(): File{
+        val mediaDir = externalMediaDirs.firstOrNull()?.let{mFile ->
+            File(mFile, resources.getString(R.string.app_name)).apply {
+                mkdirs()
+            }
+        }
+
+        return if (mediaDir != null && mediaDir.exists())
+            mediaDir else filesDir
     }
 
     /**
@@ -106,25 +116,11 @@ class CameraActivity : AppCompatActivity() {
             }
 
         }, ContextCompat.getMainExecutor(this))
-
-    }
-
-    /**
-     * Get the intended output directory to store images
-     */
-    private fun getOutputDirectory(): File{
-        val mediaDir = externalMediaDirs.firstOrNull()?.let{mFile ->
-            File(mFile, resources.getString(R.string.app_name)).apply {
-                mkdirs()
-            }
-        }
-
-        return if (mediaDir != null && mediaDir.exists())
-            mediaDir else filesDir
     }
 
     /**
      * To store images to storage
+     * Once image taken, open ImageConfirmFragment to confirm the taken image
      */
     private fun captureImage() {
         val imageCapture = imageCapture?: return
@@ -141,13 +137,30 @@ class CameraActivity : AppCompatActivity() {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo saved"
 
+                    // TODO - this is for testing purposes to see the file location and name
                     Toast.makeText(this@CameraActivity, "$msg $savedUri", Toast.LENGTH_LONG).show()
+
+                    // Go to ImageConfirmFragment
+                    openImageConfirmFragment()
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    Log.e("cameraX", "onError: ${exception.message}", exception)                }
+                    Log.e("cameraX", "onError: ${exception.message}", exception)
+                }
             }
         )
+    }
+
+    /**
+     * When image taken, move to the image confirm fragment to confirm with user the image taken
+     */
+    private fun openImageConfirmFragment() {
+        // Open the new CameraPreviewFragment (replace the activity screen with a fragment)
+        val fragment = ImageConfirmFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(binding.drawerCameraLayout.id, fragment)
+            //.addToBackStack(null) <- Uncomment if want an extra 'back' step for back button
+            .commit()
     }
 
     /**
