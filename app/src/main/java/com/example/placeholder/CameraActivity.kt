@@ -20,6 +20,8 @@ import com.example.placeholder.databinding.ActivityCameraBinding
 import com.example.placeholder.ui.camera.ImageConfirmFragment
 import com.example.placeholder.ui.camera.CameraViewModel
 import java.io.File
+import java.io.InputStream
+import java.io.OutputStream
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -48,8 +50,23 @@ class CameraActivity : AppCompatActivity() {
         // Gallery Operations
         galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
             if (imageUri != null) {
-                // TODO - add ability to save selected image to app's own files
-                openImageConfirmFragment(imageUri)
+                // Make a copy of the selected image to send to ImageConfirmFragment
+                val inputStream: InputStream? = contentResolver.openInputStream(imageUri)
+                val photoFileCopy = newPhotoFile()
+
+                try {
+                    val outputStream: OutputStream = photoFileCopy.outputStream()
+                    inputStream?.use { input ->
+                        outputStream.use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    inputStream?.close()
+                    openImageConfirmFragment(Uri.fromFile(photoFileCopy))
+                }
             }
         }
 
@@ -132,9 +149,7 @@ class CameraActivity : AppCompatActivity() {
     private fun captureImage() {
         val imageCapture = imageCapture?: return
 
-        cameraViewModel.newPhotoName = SimpleDateFormat("yy-MM-dd-HH-mm-ss-SSS", Locale.getDefault()).format(System.currentTimeMillis()) + ".png"
-        val photoFile = File(outputDirectory, cameraViewModel.newPhotoName)
-
+        val photoFile = newPhotoFile()
         val outputOption = ImageCapture.OutputFileOptions.Builder(photoFile).build()
         
         imageCapture.takePicture(
@@ -153,6 +168,11 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun newPhotoFile(): File {
+        cameraViewModel.newPhotoName = SimpleDateFormat("yy-MM-dd-HH-mm-ss-SSS", Locale.getDefault()).format(System.currentTimeMillis()) + ".png"
+        return File(outputDirectory, cameraViewModel.newPhotoName)
     }
 
     /**
