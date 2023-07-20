@@ -18,4 +18,6 @@
     <string name="camera_button_description">Open camera</string>
     <string name="capture_image_description">Capture image</string>
     <string name="open_gallery_description">Open gallery</string>
+    <string name="return_to_home">return to home</string>
+    <string name="captured_image">Captured image</string>
 </resources>

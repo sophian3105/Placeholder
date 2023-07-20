@@ -73,14 +73,18 @@ class CameraActivity : AppCompatActivity() {
         // Start camera with necessary permissions
         requestPermissionsForCamera()
 
-        // On click, take and store a picture
+        // On click, take and store an image
         binding.captureButton.setOnClickListener{
             captureImage()
         }
+        // On click, open the gallery to select image
         binding.openGalleryButton.setOnClickListener{
             galleryLauncher.launch("image/*")
         }
-
+        // On click, exit the camera activity
+        binding.returnButton.setOnClickListener{
+            finish()
+        }
 
     }
 
