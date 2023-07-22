@@ -25,7 +25,6 @@ import java.io.OutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-
 class CameraPreviewFragment : Fragment() {
     private var _binding: FragmentCameraPreviewBinding? = null
     private val binding get() = _binding ?: error("Trying to access binding when it's null.")
@@ -97,8 +96,9 @@ class CameraPreviewFragment : Fragment() {
     }
 
     /**
-     * To request permissions for the camera
-     * If received, open camera
+     * Request permissions for camera
+     *
+     * To request permissions for the camera and if received, open camera
      */
     private fun requestPermissionsForCamera() {
         requestPermissionsIfMissing { granted ->
@@ -107,8 +107,12 @@ class CameraPreviewFragment : Fragment() {
         }
     }
 
+
     /**
-     * Actually requests the necessary permissions from user
+     * Request permissions if missing
+     *
+     * @param onResult returns boolean true if permissions given, otherwise attempt to get permissions
+     * @receiver requestPermissionsForCamera()
      */
     private fun requestPermissionsIfMissing(onResult: ((Boolean) -> Unit)) {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) onResult(true)
@@ -118,7 +122,9 @@ class CameraPreviewFragment : Fragment() {
     }
 
     /**
-     * Starts new camera
+     * Start camera
+     *
+     * Opens and binds DEFAULT_BACK_CAMERA to the fragment
      */
     private fun startCamera(){
         val processCameraProvider = ProcessCameraProvider.getInstance(requireContext())
@@ -142,7 +148,10 @@ class CameraPreviewFragment : Fragment() {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
+
     /**
+     * Capture image
+     *
      * To store images to storage
      * Once image taken, open ImageConfirmFragment to confirm the taken image
      */
@@ -170,8 +179,9 @@ class CameraPreviewFragment : Fragment() {
     }
 
     /**
-     * Accepts a Uri to send to the ImageConfirmFragment
-     * Moves to the image confirm fragment to confirm with user the image taken
+     * Open image confirm fragment
+     *
+     * @param imageUri is sent to ImageConfirmFragment
      */
     private fun openImageConfirmFragment(imageUri: Uri) {
         cameraViewModel.newPhotoUri = imageUri
@@ -184,7 +194,9 @@ class CameraPreviewFragment : Fragment() {
     }
 
     /**
-     * Destroy unused resources when closed
+     * On destroy
+     *
+     * Ensure to clean up system resources from cameraExecutor
      */
     override fun onDestroy() {
         super.onDestroy()
