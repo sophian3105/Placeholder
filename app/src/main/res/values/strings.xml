@@ -20,4 +20,6 @@
     <string name="open_gallery_description">Open gallery</string>
     <string name="return_to_home">return to home</string>
     <string name="captured_image">Captured image</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
