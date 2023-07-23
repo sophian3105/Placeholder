@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.example.placeholder.databinding.FragmentImageConfirmBinding
 
 
@@ -31,6 +32,7 @@ class ImageConfirmFragment : Fragment() {
             cameraViewModel.deletePhotoFile(cameraViewModel.newPhotoName)
         }
         binding.confirmImageButton.setOnClickListener {
+            // TODO use custom data object
             val userInputAmount: String = binding.totalAmountSpentTextField.text.toString()
             if (userInputAmount.isNotEmpty()) {
                 cameraViewModel.amountSpent = userInputAmount.toDouble()
@@ -50,9 +52,9 @@ class ImageConfirmFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // To display recently captured image from camera or gallery
-        cameraViewModel.newPhotoUri?.let { imageUri ->
-            binding.prevCapturedImage.setImageURI(imageUri)
-        }
+        Glide.with(requireContext())
+            .load(cameraViewModel.newPhotoFile)
+            .into(binding.prevCapturedImage)
     }
 
 

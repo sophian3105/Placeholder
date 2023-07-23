@@ -1,6 +1,5 @@
 package com.example.placeholder.ui.camera
 
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import java.io.File
@@ -13,15 +12,15 @@ class CameraViewModel : ViewModel() {
      * Variables for receipt image function
      */
     var newPhotoName: String = "default_new_camera_capture_name"
-    var newPhotoUri: Uri? = null
+    var newPhotoFile: File? = null
     var photosDirectory: File? = null
 
     /**
-     * New photo file
+     * Create photo file
      *
      * @return a File in Environment.DIRECTORY_PICTURES with a name that includes the time
      */
-    fun newPhotoFile(): File {
+    fun createPhotoFile(): File {
         newPhotoName = SimpleDateFormat("yy-MM-dd-HH-mm-ss-SSS", Locale.getDefault()).format(System.currentTimeMillis()) + ".png"
         return File(photosDirectory, newPhotoName)
     }
@@ -42,6 +41,7 @@ class CameraViewModel : ViewModel() {
     /**
      * Variables for other receipt functions
      */
+    // TODO use custom data object
     var amountSpent: Double = 0.00
     var receiptCategory: String = "default_receipt_category"
 }

@@ -2,7 +2,6 @@ package com.example.placeholder.ui.camera
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.placeholder.R
 import com.example.placeholder.databinding.FragmentCameraPreviewBinding
+import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.concurrent.ExecutorService
@@ -65,7 +65,7 @@ class CameraPreviewFragment : Fragment() {
             if (imageUri != null) {
                 //Make a copy of the selected image to send to ImageConfirmFragment
                 val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri)
-                val photoFileCopy = cameraViewModel.newPhotoFile()
+                val photoFileCopy = cameraViewModel.createPhotoFile()
 
                 try {
                     val outputStream: OutputStream = photoFileCopy.outputStream()
@@ -75,7 +75,7 @@ class CameraPreviewFragment : Fragment() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {
-                    openImageConfirmFragment(Uri.fromFile(photoFileCopy))
+                    openImageConfirmFragment(photoFileCopy)
                 }
             } else Log.e("galleryLauncherImageUri", "imageUri was null")
         }
@@ -158,7 +158,8 @@ class CameraPreviewFragment : Fragment() {
      */
     private fun captureImage() {
         val imageCapture = imageCapture?: return
-        val outputOption = ImageCapture.OutputFileOptions.Builder(cameraViewModel.newPhotoFile()).build()
+        val photoFile = cameraViewModel.createPhotoFile()
+        val outputOption = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
         imageCapture.takePicture(
             outputOption, ContextCompat.getMainExecutor(requireContext()),
@@ -172,8 +173,7 @@ class CameraPreviewFragment : Fragment() {
                  * @param outputFileResults is the resulting File containing the captured image
                  */
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val savedUri = outputFileResults.savedUri ?: return
-                    openImageConfirmFragment(savedUri)
+                    openImageConfirmFragment(photoFile)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -186,10 +186,10 @@ class CameraPreviewFragment : Fragment() {
     /**
      * Open image confirm fragment
      *
-     * @param imageUri is sent to ImageConfirmFragment
+     * @param imageFile is sent to ImageConfirmFragment
      */
-    private fun openImageConfirmFragment(imageUri: Uri) {
-        cameraViewModel.newPhotoUri = imageUri
+    private fun openImageConfirmFragment(imageFile: File) {
+        cameraViewModel.newPhotoFile = imageFile
 
         val fragment = ImageConfirmFragment()
         parentFragmentManager.beginTransaction()
