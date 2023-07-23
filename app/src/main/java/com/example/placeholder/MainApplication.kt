@@ -13,6 +13,8 @@ class MainApplication : Application(){
     }
 
     /**
+     * Create nomedia if not exists
+     *
      * Ensure that Environment.DIRECTORY_PICTURES is not accessible by the public gallery
      */
     private fun createNomediaIfNotExists() {
