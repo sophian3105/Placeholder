@@ -19,6 +19,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.placeholder.R
 import com.example.placeholder.databinding.FragmentCameraPreviewBinding
 import java.io.InputStream
 import java.io.OutputStream
@@ -64,7 +65,7 @@ class CameraPreviewFragment : Fragment() {
             if (imageUri != null) {
                 //Make a copy of the selected image to send to ImageConfirmFragment
                 val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri)
-                val photoFileCopy = cameraViewModel.newPhotoFile(requireContext())
+                val photoFileCopy = cameraViewModel.newPhotoFile()
 
                 try {
                     val outputStream: OutputStream = photoFileCopy.outputStream()
@@ -157,7 +158,7 @@ class CameraPreviewFragment : Fragment() {
      */
     private fun captureImage() {
         val imageCapture = imageCapture?: return
-        val outputOption = ImageCapture.OutputFileOptions.Builder(cameraViewModel.newPhotoFile(requireContext())).build()
+        val outputOption = ImageCapture.OutputFileOptions.Builder(cameraViewModel.newPhotoFile()).build()
 
         imageCapture.takePicture(
             outputOption, ContextCompat.getMainExecutor(requireContext()),
@@ -191,8 +192,8 @@ class CameraPreviewFragment : Fragment() {
         cameraViewModel.newPhotoUri = imageUri
 
         val fragment = ImageConfirmFragment()
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(binding.drawerFragmentCameraLayout.id, fragment)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.drawer_camera_layout, fragment)
             .addToBackStack(null)
             .commit()
     }
