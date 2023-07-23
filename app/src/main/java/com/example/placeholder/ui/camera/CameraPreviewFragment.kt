@@ -163,8 +163,12 @@ class CameraPreviewFragment : Fragment() {
             outputOption, ContextCompat.getMainExecutor(requireContext()),
             object : ImageCapture.OnImageSavedCallback{
                 /**
-                 * On image captured and saved, send the Uri location of the image to the viewModel
+                 * On image saved
+                 *
+                 * Send the Uri of the image to the cameraViewModel
                  * Then open the ImageConfirmFragment to confirm the taken image
+                 *
+                 * @param outputFileResults is the resulting File containing the captured image
                  */
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = outputFileResults.savedUri ?: return
