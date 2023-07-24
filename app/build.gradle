@@ -68,14 +68,12 @@ dependencies {
     // Glide dependencies for image loading
     def glide_version = "4.15.1"
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
     ksp "com.github.bumptech.glide:ksp:$glide_version"
 
     // Room dependencies for database storage
     def room_version = "2.5.2"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
 }
 
