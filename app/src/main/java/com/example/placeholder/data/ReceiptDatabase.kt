@@ -21,6 +21,7 @@ abstract class ReceiptDatabase : RoomDatabase() {
         private var INSTANCE: ReceiptDatabase? = null
 
         fun getDatabase(context: Context): ReceiptDatabase {
+            // Ensure there is only one database at a time
             val tempInstance = INSTANCE
             if (tempInstance != null) return tempInstance
 
