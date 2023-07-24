@@ -3,10 +3,11 @@ package com.example.placeholder
 import android.app.Application
 import android.os.Environment
 import android.util.Log
+import com.example.placeholder.data.ReceiptDatabase
 import java.io.File
 
 class MainApplication : Application(){
-
+    val database by lazy { ReceiptDatabase.getDatabase(this) }
     override fun onCreate() {
         super.onCreate()
         createNomediaIfNotExists()

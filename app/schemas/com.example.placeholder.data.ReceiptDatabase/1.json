@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cdd3f9c615b2d450ba74303c2bd03df6",
+    "identityHash": "add04337d4f65152368f251fe48b81b4",
     "entities": [
       {
         "tableName": "receipts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`receiptName` TEXT NOT NULL, `receiptPath` TEXT NOT NULL, `receiptAmount` REAL NOT NULL, `receiptCategory` TEXT NOT NULL, PRIMARY KEY(`receiptName`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`receiptName` TEXT NOT NULL, `receiptImage` TEXT NOT NULL, `receiptAmount` REAL NOT NULL, `receiptCategory` TEXT NOT NULL, PRIMARY KEY(`receiptName`))",
         "fields": [
           {
             "fieldPath": "receiptName",
@@ -15,8 +15,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "receiptPath",
-            "columnName": "receiptPath",
+            "fieldPath": "receiptImage",
+            "columnName": "receiptImage",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -46,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cdd3f9c615b2d450ba74303c2bd03df6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'add04337d4f65152368f251fe48b81b4')"
     ]
   }
 }

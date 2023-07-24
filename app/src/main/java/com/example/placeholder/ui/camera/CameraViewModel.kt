@@ -2,27 +2,32 @@ package com.example.placeholder.ui.camera
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.placeholder.data.Receipt
+import com.example.placeholder.data.ReceiptDatabase
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CameraViewModel : ViewModel() {
+class CameraViewModel(private val database: ReceiptDatabase): ViewModel() {
 
     /**
      * Variables for receipt image function
      */
-    var newPhotoName: String = "default_new_camera_capture_name"
-    var newPhotoFile: File? = null
-    var photosDirectory: File? = null
+    var photosDirectory: File? = null // Init on CameraActivity load
+    var newReceipt: Receipt = Receipt("", File.createTempFile("temp", "file"), 0.00, "")
 
     /**
      * Create photo file
      *
-     * @return a File in Environment.DIRECTORY_PICTURES with a name that includes the time
+     * Set newReceipt.receiptName as the current date and time
+     * @return a newReceipt.receiptName file at Environment.DIRECTORY_PICTURES
      */
-    fun createPhotoFile(): File {
-        newPhotoName = SimpleDateFormat("yy-MM-dd-HH-mm-ss-SSS", Locale.getDefault()).format(System.currentTimeMillis()) + ".png"
-        return File(photosDirectory, newPhotoName)
+    fun createReceiptImageFile(): File {
+        newReceipt.receiptName = SimpleDateFormat("yy-MM-dd-HH-mm-ss-SSS", Locale.getDefault()).format(System.currentTimeMillis()) + ".png"
+        return File(photosDirectory, newReceipt.receiptName)
     }
 
     /**
@@ -33,15 +38,27 @@ class CameraViewModel : ViewModel() {
     fun deletePhotoFile(photoName: String) {
         val photoToDelete = File(photosDirectory, photoName)
 
-        if (photoToDelete.delete()) Log.i("FUN deletePhotoFile", "$photoName deleted successfully")
-        else Log.e("FUN deletePhotoFile", "File does not exist or failed to delete")
+        if (photoToDelete.delete()) Log.i("FUNC deletePhotoFile", "$photoName deleted successfully")
+        else Log.e("FUNC deletePhotoFile", "File does not exist or failed to delete")
     }
 
 
     /**
-     * Variables for other receipt functions
+     * Insert receipt
+     *
+     * Only inserting receipts is needed in CameraActivity. Updating, querying, and deleting occur in another activity
+     * @param receipt to be inserted
      */
-    // TODO use custom data object
-    var amountSpent: Double = 0.00
-    var receiptCategory: String = "default_receipt_category"
+    fun insertReceipt(receipt: Receipt) = viewModelScope.launch {
+        database.receiptDao().insertReceipt(receipt)
+    }
+}
+
+class CameraViewModelFactory(private val receiptDatabase: ReceiptDatabase) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CameraViewModel::class.java)) {
+            return CameraViewModel(receiptDatabase) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

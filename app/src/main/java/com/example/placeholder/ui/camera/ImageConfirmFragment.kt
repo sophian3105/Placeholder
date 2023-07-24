@@ -2,6 +2,7 @@ package com.example.placeholder.ui.camera
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,19 +28,27 @@ class ImageConfirmFragment : Fragment() {
 
         //binding.amountSpentTextField
         //binding.categoryDropdownSpinner
+
+        // Delete the photo to be retaken (on retake the name will be overwritten)
         binding.retakeImageButton.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack()
-            cameraViewModel.deletePhotoFile(cameraViewModel.newPhotoName)
+            cameraViewModel.deletePhotoFile(cameraViewModel.newReceipt.receiptName)
         }
+        // Attempt to get user input, if valid, save the receipt and finish the activity
         binding.confirmImageButton.setOnClickListener {
-            // TODO use custom data object
             val userInputAmount: String = binding.totalAmountSpentTextField.text.toString()
+            val userInputCategory: String = binding.receiptCategoryDropdownSpinner.selectedItem.toString()
             if (userInputAmount.isNotEmpty()) {
-                cameraViewModel.amountSpent = userInputAmount.toDouble()
-                // Deal with category selection (optional entry)
-                //...
+                try {
+                    cameraViewModel.newReceipt.receiptAmount = userInputAmount.toDouble()
+                    cameraViewModel.newReceipt.receiptCategory = userInputCategory
+                    cameraViewModel.insertReceipt(cameraViewModel.newReceipt)
 
-                // TODO proceed
+                    Log.i("DATABASE db", "Inserted ${cameraViewModel.newReceipt.receiptName}: ${cameraViewModel.newReceipt.receiptAmount}")
+                    requireActivity().finish()
+                } catch (e: Exception) {
+                    Log.e("DATABASE db", "Error inserting receipt")
+                }
             } else {
                 Toast.makeText(requireContext(), "Please enter the amount present on receipt!", Toast.LENGTH_LONG).show()
             }
@@ -53,7 +62,7 @@ class ImageConfirmFragment : Fragment() {
 
         // To display recently captured image from camera or gallery
         Glide.with(requireContext())
-            .load(cameraViewModel.newPhotoFile)
+            .load(cameraViewModel.newReceipt.receiptImage)
             .into(binding.prevCapturedImage)
     }
 

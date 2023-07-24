@@ -1,5 +1,6 @@
 package com.example.placeholder.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ProvidedTypeConverter
@@ -8,10 +9,10 @@ import java.io.File
 
 @Entity(tableName = "receipts")
 data class Receipt(
-    @PrimaryKey val receiptName: String,
-    val receiptPath: String,
-    val receiptAmount: Double,
-    val receiptCategory: String
+    @PrimaryKey @ColumnInfo(name = "receiptName") var receiptName: String,
+    @ColumnInfo(name = "receiptImage", typeAffinity = ColumnInfo.TEXT) var receiptImage: File,
+    @ColumnInfo(name = "receiptAmount") var receiptAmount: Double,
+    @ColumnInfo(name = "receiptCategory") var receiptCategory: String
 )
 
 @ProvidedTypeConverter

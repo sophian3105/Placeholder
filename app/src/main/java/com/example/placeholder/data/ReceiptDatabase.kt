@@ -1,12 +1,7 @@
 package com.example.placeholder.data
 
 import android.content.Context
-import androidx.room.Dao
 import androidx.room.Database
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -22,39 +17,18 @@ abstract class ReceiptDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): ReceiptDatabase {
             // Ensure there is only one database at a time
-            val tempInstance = INSTANCE
-            if (tempInstance != null) return tempInstance
-
-            synchronized(this) {
-                val db = Room.databaseBuilder(
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     ReceiptDatabase::class.java,
                     "receipt_database"
-                ).addTypeConverter(ReceiptConverters::class)
+                ).addTypeConverter(ReceiptConverters())
                     .build()
 
-                INSTANCE = db
-                return db
+                INSTANCE = instance
+                instance
             }
         }
     }
-}
-
-@Dao
-interface ReceiptDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertReceipt(receipt: Receipt)
-
-    @Delete
-    suspend fun deleteReceipt(receipt: Receipt)
-
-    @Query("SELECT * FROM receipts")
-    suspend fun getAllReceipts(): List<Receipt>
-
-    @Query("SELECT receiptAmount FROM receipts")
-    suspend fun getAllReceiptAmounts(): List<Double>
-
-    @Query("SELECT * FROM receipts WHERE receiptCategory LIKE :queryReceiptCategory")
-    suspend fun getAllReceiptsFromCategory(queryReceiptCategory: String): List<Receipt>
 }
 
