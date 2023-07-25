@@ -13,7 +13,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private val cameraViewModel: CameraViewModel by viewModels {
         CameraViewModelFactory((application as MainApplication).database)
-    }// Unnecessary if not using in the activity code. The fragment's ... by activityViewModels() already shares the viewModel
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -9,10 +9,14 @@ import java.io.File
 
 @Entity(tableName = "receipts")
 data class Receipt(
-    @PrimaryKey @ColumnInfo(name = "receiptName") var receiptName: String,
-    @ColumnInfo(name = "receiptImage", typeAffinity = ColumnInfo.TEXT) var receiptImage: File,
-    @ColumnInfo(name = "receiptAmount") var receiptAmount: Double,
-    @ColumnInfo(name = "receiptCategory") var receiptCategory: String
+    @PrimaryKey @ColumnInfo(name = "receiptName")
+        var receiptName: String,
+    @ColumnInfo(name = "receiptImage", typeAffinity = ColumnInfo.TEXT)
+        var receiptImage: File,
+    @ColumnInfo(name = "receiptAmount")
+        var receiptAmount: Double,
+    @ColumnInfo(name = "receiptCategory")
+        var receiptCategory: String
 )
 
 @ProvidedTypeConverter

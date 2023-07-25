@@ -26,29 +26,28 @@ class ImageConfirmFragment : Fragment() {
         _binding = FragmentImageConfirmBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //binding.amountSpentTextField
-        //binding.categoryDropdownSpinner
+        //binding.amountSpentTextField <- the amount spent on the receipt. User editable and TODO autofill by OCR
+        //binding.categoryDropdownSpinner <- the category selection of the receipt and TODO allow user to add new categories
 
         // Delete the photo to be retaken (on retake the name will be overwritten)
         binding.retakeImageButton.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack()
-            cameraViewModel.deletePhotoFile(cameraViewModel.newReceipt.receiptName)
+            cameraViewModel.deletePhotoFile(cameraViewModel.newReceipt.receiptImage)
         }
         // Attempt to get user input, if valid, save the receipt and finish the activity
         binding.confirmImageButton.setOnClickListener {
             val userInputAmount: String = binding.totalAmountSpentTextField.text.toString()
             val userInputCategory: String = binding.receiptCategoryDropdownSpinner.selectedItem.toString()
-            if (userInputAmount.isNotEmpty()) {
-                try {
-                    cameraViewModel.newReceipt.receiptAmount = userInputAmount.toDouble()
-                    cameraViewModel.newReceipt.receiptCategory = userInputCategory
-                    cameraViewModel.insertReceipt(cameraViewModel.newReceipt)
 
-                    Log.i("DATABASE db", "Inserted ${cameraViewModel.newReceipt.receiptName}: ${cameraViewModel.newReceipt.receiptAmount}")
-                    requireActivity().finish()
-                } catch (e: Exception) {
-                    Log.e("DATABASE db", "Error inserting receipt")
-                }
+            if (userInputAmount.isNotEmpty()) {
+                cameraViewModel.newReceipt.receiptAmount = userInputAmount.toDouble()
+                cameraViewModel.newReceipt.receiptCategory = userInputCategory
+
+                cameraViewModel.insertReceipt(cameraViewModel.newReceipt)
+
+                Log.i("DATABASE db", "Inserted ${cameraViewModel.newReceipt.receiptName}: \$${cameraViewModel.newReceipt.receiptAmount}")
+                cameraViewModel.tempFile.delete()
+                requireActivity().finish()
             } else {
                 Toast.makeText(requireContext(), "Please enter the amount present on receipt!", Toast.LENGTH_LONG).show()
             }

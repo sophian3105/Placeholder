@@ -17,7 +17,8 @@ class CameraViewModel(private val database: ReceiptDatabase): ViewModel() {
      * Variables for receipt image function
      */
     var photosDirectory: File? = null // Init on CameraActivity load
-    var newReceipt: Receipt = Receipt("", File.createTempFile("temp", "file"), 0.00, "")
+    var tempFile: File = File.createTempFile("temp", null)
+    var newReceipt: Receipt = Receipt("", tempFile, 0.00, "")
 
     /**
      * Create photo file
@@ -33,12 +34,10 @@ class CameraViewModel(private val database: ReceiptDatabase): ViewModel() {
     /**
      * Delete photo file
      *
-     * @param photoName name of the photo in Environment.DIRECTORY_PICTURES to be deleted
+     * @param photoFile to be deleted
      */
-    fun deletePhotoFile(photoName: String) {
-        val photoToDelete = File(photosDirectory, photoName)
-
-        if (photoToDelete.delete()) Log.i("FUNC deletePhotoFile", "$photoName deleted successfully")
+    fun deletePhotoFile(photoFile: File) {
+        if (photoFile.delete()) Log.i("FUNC deletePhotoFile", "File deleted successfully")
         else Log.e("FUNC deletePhotoFile", "File does not exist or failed to delete")
     }
 
