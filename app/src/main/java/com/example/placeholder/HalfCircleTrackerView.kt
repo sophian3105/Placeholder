@@ -18,12 +18,12 @@ class HalfCircleTrackerView @JvmOverloads constructor(
 
     // Custom properties
     private var progress = 0.5f // Initial progress (from 0.0 to 1.0)
-    private val startAngle = -90f // Start angle of the half-circle (12 o'clock position)
+    private val startAngle = -180f // Start angle of the half-circle (12 o'clock position)
     private val sweepAngle = 180f // Sweep angle of the half-circle (180 degrees)
 
     private val backgroundColor = Color.RED
     private val progressColor = Color.GREEN
-    private val strokeWidth = 10f // Width of the tracker stroke
+    private val strokeWidth = 40f // Width of the tracker stroke
 
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
