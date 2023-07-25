@@ -1,4 +1,4 @@
-package com.example.placeholder.ui.gallery
+package com.example.placeholder.ui.calendar
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.placeholder.databinding.FragmentGalleryBinding
+import com.example.placeholder.databinding.FragmentCalendarBinding
 
-class GalleryFragment : Fragment() {
-
-    private var _binding: FragmentGalleryBinding? = null
+class CalendarFragment : Fragment() {
+    private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,11 +17,12 @@ class GalleryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val galleryViewModel =
-            ViewModelProvider(this)[GalleryViewModel::class.java]
+        val calendarViewModel =
+            ViewModelProvider(this)[CalendarViewModel::class.java]
+
 
 
         return root

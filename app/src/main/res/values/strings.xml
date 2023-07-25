@@ -10,6 +10,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_calendar">Calendar</string>
 
     <string name="hello_home">Hello, Home!</string>
 
@@ -20,6 +21,5 @@
     <string name="open_gallery_description">Open gallery</string>
     <string name="return_to_home">return to home</string>
     <string name="captured_image">Captured image</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

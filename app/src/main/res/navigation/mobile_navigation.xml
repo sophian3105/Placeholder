@@ -12,18 +12,19 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/past_receipts"
-        android:name="com.example.placeholder.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/new_receipt"
+        android:id="@+id/gallery_page"
         android:name="com.example.placeholder.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/calendar"
+        android:id="@+id/calendar_page"
+        android:name="com.example.placeholder.ui.calendar.CalendarFragment"
+        android:label="@string/menu_calendar"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/slideshow_page"
         android:name="com.example.placeholder.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
