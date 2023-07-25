@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,36 +17,143 @@
             android:textSize="18sp"
             android:textColor="@android:color/black"
             android:padding="16dp" />
-    <!-- Add the input EditText -->
-    <EditText
-        android:id="@+id/inputEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your text here"
-        android:padding="16dp" />
-
-    <!-- Add two buttons for user response -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/submitButton"
-            android:layout_width="wrap_content"
+        <!-- Text and entry field for amount on receipt -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit"
-            android:layout_weight="1" />
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="10dp">
 
-        <Button
-            android:id="@+id/cancelButton"
+            <TextView
+                android:id="@+id/totalAmountSpentTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="16sp"
+                android:text="Spending goal:" />
+
+            <TextView
+                android:id="@+id/dollarSignTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/totalAmountSpentTextField"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/totalAmountSpentTextField"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:hint="0.00"
+                android:textSize="16sp"
+                android:inputType="numberDecimal"
+                android:textAlignment="textEnd"
+                android:importantForAutofill="no" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Text and dropdown for category of spending -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:layout_weight="1" />
+            android:layout_height="249dp"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="10dp">
+
+            <!-- Replace 'android:spinnerMode="dialog"' with 'android:spinnerMode="dropdown"' for a dropdown style -->
+            <TextView
+                android:id="@+id/receiptCategoryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category of receipt:"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/receiptCategoryDropdownSpinner"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:entries="@array/receipt_category_dropdown_items"
+                android:spinnerMode="dialog"
+                android:textAlignment="textEnd"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/receiptCategoryTextView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/submitButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Submit" />
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Submit and cancel buttons -->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center"-->
+<!--            android:paddingHorizontal="40dp"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingBottom="30dp">-->
+
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Cancel"-->
+<!--                android:textSize="16sp"-->
+<!--                android:id="@+id/cancelButton"-->
+<!--                style="?android:attr/buttonBarButtonStyle" />-->
+
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="100dp"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:text="Submit"-->
+<!--                android:textSize="16sp"-->
+<!--                android:id="@+id/submitButton"-->
+<!--                tools:ignore="ButtonStyle" />-->
+
+
+<!--        </LinearLayout>-->
     </LinearLayout>
 
 
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--    &lt;!&ndash; Add the input EditText &ndash;&gt;-->
+<!--    <EditText-->
+<!--        android:id="@+id/inputEditText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Enter your text here"-->
+<!--        android:padding="16dp" />-->
+
+<!--    &lt;!&ndash; Add two buttons for user response &ndash;&gt;-->
+

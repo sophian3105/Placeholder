@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
             .create()
 
         // Find the views in the custom dialog layout
-        val inputEditText: EditText = dialogView.findViewById(R.id.inputEditText)
+        val inputEditText: EditText = dialogView.findViewById(R.id.totalAmountSpentTextField)
         val submitButton: Button = dialogView.findViewById(R.id.submitButton)
         val cancelButton: Button = dialogView.findViewById(R.id.cancelButton)
 
