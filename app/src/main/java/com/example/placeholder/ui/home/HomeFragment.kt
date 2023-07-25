@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.placeholder.databinding.FragmentHomeBinding
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
+import com.example.placeholder.HalfCircleTrackerView
 import com.example.placeholder.R
 
 
@@ -82,6 +83,10 @@ class HomeFragment : Fragment() {
         buttonOpenDialog.setOnClickListener {
             showCustomDialog()
         }
+        val halfCircleTrackerView: HalfCircleTrackerView = root.findViewById(R.id.halfCircleTracker)
+        //Adjust the fill up of the circle colour
+        halfCircleTrackerView.setProgress(0.7f)
+
         return root
     }
 
