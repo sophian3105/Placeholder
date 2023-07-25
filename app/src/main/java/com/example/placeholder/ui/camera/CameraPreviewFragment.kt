@@ -1,6 +1,7 @@
 package com.example.placeholder.ui.camera
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +19,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.placeholder.R
+import com.example.placeholder.CameraActivity
 import com.example.placeholder.databinding.FragmentCameraPreviewBinding
 import java.io.InputStream
 import java.io.OutputStream
@@ -29,11 +30,19 @@ class CameraPreviewFragment : Fragment() {
     private var _binding: FragmentCameraPreviewBinding? = null
     private val binding get() = _binding ?: error("Trying to access binding when it's null.")
     private val cameraViewModel: CameraViewModel by activityViewModels()
+    private lateinit var activity: CameraActivity
 
     // CameraX variables
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
     private lateinit var galleryLauncher: ActivityResultLauncher<String?>
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is CameraActivity) {
+            activity = context
+        }
+    }
 
     /**
      * Called before the UI is loaded
@@ -188,10 +197,7 @@ class CameraPreviewFragment : Fragment() {
      */
     private fun openImageConfirmFragment() {
         val fragment = ImageConfirmFragment()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.drawer_camera_layout, fragment)
-            .addToBackStack(null)
-            .commit()
+        activity.replaceFragment(fragment, true)
     }
 
     /**
