@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ReceiptDao {
@@ -19,11 +20,5 @@ interface ReceiptDao {
     suspend fun deleteReceipt(receipt: Receipt)
 
     @Query("SELECT * FROM receipts")
-    suspend fun getAllReceipts(): List<Receipt>
-
-    @Query("SELECT receiptAmount FROM receipts")
-    suspend fun getAllReceiptAmounts(): List<Double>
-
-    @Query("SELECT * FROM receipts WHERE receiptCategory LIKE :queryReceiptCategory")
-    suspend fun getAllReceiptsFromCategory(queryReceiptCategory: String): List<Receipt>
+    fun getAllReceipts(): Flow<List<Receipt>>
 }
