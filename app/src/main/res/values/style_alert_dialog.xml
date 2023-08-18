@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AlertDialogTheme" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+            <item name="shapeAppearanceOverlay">@style/RoundShapeAppearance</item>
+
+            <item name="buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
+            <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        </style>
+
+        <style name="RoundShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+            <item name="cornerFamily">rounded</item>
+            <item name="cornerSize">20dp</item>
+        </style>
+
+        <style name="NeutralButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+            <item name="android:layout_marginLeft">8dp</item>
+            <item name="android:layout_marginBottom">4dp</item>
+        </style>
+
+        <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+            <item name="android:textColor">@color/white</item>
+            <item name="android:backgroundTint">@color/purple_500</item>
+            <item name="android:layout_marginRight">8dp</item>
+            <item name="android:layout_marginBottom">4dp</item>
+        </style>
+</resources>

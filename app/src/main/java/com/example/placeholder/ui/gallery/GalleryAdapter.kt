@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.placeholder.R
 import com.example.placeholder.data.Receipt
 import com.example.placeholder.databinding.ItemGalleryBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class GalleryAdapter() : ListAdapter<Receipt, GalleryAdapter.ReceiptViewHolder>(DiffCallback) {
     companion object {
@@ -60,29 +62,36 @@ class GalleryAdapter() : ListAdapter<Receipt, GalleryAdapter.ReceiptViewHolder>(
                 false
             )
         )
-        var isAnimating = false
         viewHolder.itemView.setOnLongClickListener { view ->
             // Animate the long click selection
-            if (!isAnimating) {
-                isAnimating = true
-                view.animate()
-                    .scaleXBy(0.075f)
-                    .scaleYBy(0.075f)
-                    .setInterpolator(AccelerateDecelerateInterpolator())
-                    .setDuration(200)
-                    .withEndAction { // Long click completed, reset the view's size
-                        view.animate()
-                            .scaleX(1.0f)
-                            .scaleY(1.0f)
-                            .setInterpolator(AccelerateDecelerateInterpolator())
-                            .setDuration(200)
-                            .withEndAction {
-                                isAnimating = false
-                            }
-                            .start()
-                    }
-                    .start()
-            }
+            view.animate()
+                .scaleXBy(0.075f)
+                .scaleYBy(0.075f)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .setDuration(200)
+                .withEndAction { // Long click completed, reset the view's size
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .setDuration(200)
+                        .start()
+                }
+                .start()
+
+            // Show delete dialog
+            MaterialAlertDialogBuilder(viewGroup.context, R.style.AlertDialogTheme)
+                .setMessage("Are you sure you want to delete this receipt?")
+                .setNeutralButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Delete") { dialog, _ ->
+                    // TODO Delete the receipt
+                    dialog.dismiss()
+                }
+                .show()
+
+
 
             true
         }
@@ -98,7 +107,4 @@ class GalleryAdapter() : ListAdapter<Receipt, GalleryAdapter.ReceiptViewHolder>(
     override fun onBindViewHolder(holder: ReceiptViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
-
-
 }
