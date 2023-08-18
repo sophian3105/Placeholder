@@ -2,10 +2,13 @@ package com.example.placeholder.ui.gallery
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.placeholder.data.Receipt
 import com.example.placeholder.databinding.ItemGalleryBinding
 
@@ -32,8 +35,12 @@ class GalleryAdapter() : ListAdapter<Receipt, GalleryAdapter.ReceiptViewHolder>(
         fun bind(receipt: Receipt) {
             Glide.with(binding.root)
                 .load(receipt.receiptImage)
+                .transform(
+                    FitCenter(),
+                    RoundedCorners(20)
+                )
                 .into(binding.receiptImageView)
-            binding.amountTextView.text = "Amount: \$${receipt.receiptAmount}"
+            binding.amountTextView.text = "Spent: \$${receipt.receiptAmount}"
             binding.categoryTextView.text = "Category: ${receipt.receiptCategory}"
         }
     }
@@ -53,8 +60,31 @@ class GalleryAdapter() : ListAdapter<Receipt, GalleryAdapter.ReceiptViewHolder>(
                 false
             )
         )
-        viewHolder.itemView.setOnClickListener {
-            // TODO: Implement click listener to edit this receipt
+        var isAnimating = false
+        viewHolder.itemView.setOnLongClickListener { view ->
+            // Animate the long click selection
+            if (!isAnimating) {
+                isAnimating = true
+                view.animate()
+                    .scaleXBy(0.075f)
+                    .scaleYBy(0.075f)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .setDuration(200)
+                    .withEndAction { // Long click completed, reset the view's size
+                        view.animate()
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .setInterpolator(AccelerateDecelerateInterpolator())
+                            .setDuration(200)
+                            .withEndAction {
+                                isAnimating = false
+                            }
+                            .start()
+                    }
+                    .start()
+            }
+
+            true
         }
         return viewHolder
     }

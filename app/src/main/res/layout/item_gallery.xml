@@ -4,9 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:id="@+id/receiptRecyclerViewItem"
-    android:paddingHorizontal="16dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="0dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    android:padding="16dp"
+    android:background="@drawable/round_layout_background">
+
 
     <ImageView
         android:id="@+id/receiptImageView"
