@@ -39,7 +39,7 @@ class GalleryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val galleryAdapter = GalleryAdapter()
+        val galleryAdapter = GalleryAdapter(galleryViewModel)
         receiptRecyclerView = binding.receiptRecyclerView
         receiptRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         receiptRecyclerView.adapter = galleryAdapter

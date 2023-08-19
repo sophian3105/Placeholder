@@ -14,7 +14,7 @@ import com.example.placeholder.data.Receipt
 import com.example.placeholder.databinding.ItemGalleryBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class GalleryAdapter() : ListAdapter<Receipt, GalleryAdapter.ReceiptViewHolder>(DiffCallback) {
+class GalleryAdapter(private val galleryViewModel: GalleryViewModel) : ListAdapter<Receipt, GalleryAdapter.ReceiptViewHolder>(DiffCallback) {
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Receipt>() {
             override fun areItemsTheSame(oldItem: Receipt, newItem: Receipt): Boolean {
@@ -86,7 +86,7 @@ class GalleryAdapter() : ListAdapter<Receipt, GalleryAdapter.ReceiptViewHolder>(
                     dialog.dismiss()
                 }
                 .setPositiveButton("Delete") { dialog, _ ->
-                    // TODO Delete the receipt
+                    galleryViewModel.deleteReceipt(getItem(viewHolder.absoluteAdapterPosition))
                     dialog.dismiss()
                 }
                 .show()
