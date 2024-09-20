@@ -21,9 +21,7 @@ fun MainNavBar(navController: NavController) {
     ) {
         val currentBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = currentBackStackEntry?.destination?.route
-            ?: Destination.Home.route.also {
-                Log.w("MainNavBar", "currentRoute is null, defaulting to '$it'")
-            }
+        if (currentRoute == null) Log.w("MainNavBar", "currentRoute is null")
 
         Destination.entries
             .filter { it.visible }
