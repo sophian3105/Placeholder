@@ -20,14 +20,12 @@ fun MainNavBar(navController: NavController) {
         modifier = Modifier.fillMaxWidth()
     ) {
         val currentBackStackEntry by navController.currentBackStackEntryAsState()
-        var currentRoute = currentBackStackEntry?.destination?.route
+        val currentRoute = currentBackStackEntry?.destination?.route
+            ?: Destination.Home.route.also {
+                Log.w("MainNavBar", "currentRoute is null, defaulting to '$it'")
+            }
 
-        if (currentRoute == null) {
-            Log.w("MainNavBar", "currentRoute is null")
-            currentRoute = Destination.Home.route
-        }
-
-        Destination.entries.forEach { destination ->
+        Destination.entries.sortedBy{ it.index }.forEach { destination ->
             NavigationBarItem(
                 icon = { destination.GetIcon(context) },
                 label = { Text(destination.getTitle(context)) },

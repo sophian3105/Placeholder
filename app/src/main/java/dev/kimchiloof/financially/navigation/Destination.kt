@@ -12,13 +12,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import dev.kimchiloof.financially.R
 
 enum class Destination(
-    val route: String,
-    @StringRes private val title: Int,
-    private val icon: ImageVector
+    val index: Int,                     // Order to display in navigation bar
+    val route: String,                  // Unique route
+    @StringRes private val title: Int,  // Title resource
+    private val icon: ImageVector       // Icon to display
 ) {
-    Finances("finances", R.string.navDestinationTitleFinances, Icons.Default.ShoppingCart),
-    Gallery("gallery", R.string.navDestinationTitleGallery, Icons.Default.Favorite),
-    Home("home", R.string.navDestinationTitleHome, Icons.Default.Home);
+    Gallery(0, "gallery", R.string.navDestinationTitleGallery, Icons.Default.Favorite),
+    Home(1, "home", R.string.navDestinationTitleHome, Icons.Default.Home),
+    Finances(2, "finances", R.string.navDestinationTitleFinances, Icons.Default.ShoppingCart);
 
     fun getTitle(context: Context): String {
         return context.getString(title)
