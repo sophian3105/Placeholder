@@ -1,5 +1,6 @@
 package dev.kimchiloof.financially.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,17 +14,32 @@ fun MainNavGraph (
     navHostController: NavHostController,
     startDestination: Destination = Destination.Home
 ) {
+    fun resetToHome() {
+        // Navigate direct to the Home screen and clear the back stack
+        navHostController.navigate(Destination.Home.route) {
+            popUpTo(Destination.Home.route) { inclusive = true }
+        }
+    }
+
     NavHost(
         navController = navHostController,
         startDestination = startDestination.route
     ) {
-        composable(Destination.Home.route) {
+        composable(
+            route = Destination.Home.route
+        ) {
             HomeScreen()
         }
-        composable(Destination.Finances.route) {
+        composable(
+            route = Destination.Finances.route
+        ) {
+            BackHandler { resetToHome() }
             FinancesScreen()
         }
-        composable(Destination.Gallery.route) {
+        composable(
+            route = Destination.Gallery.route
+        ) {
+            BackHandler { resetToHome() }
             GalleryScreen()
         }
     }

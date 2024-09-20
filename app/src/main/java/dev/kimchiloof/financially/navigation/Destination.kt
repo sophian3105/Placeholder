@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import dev.kimchiloof.financially.R
 
 enum class Destination(
-    val visible: Boolean,                  // Whether to display in navigation bar
+    val visible: Boolean,               // Whether to display in navigation bar
     val index: Int,                     // Order to display in navigation bar
     val route: String,                  // Unique route
     @StringRes private val title: Int,  // Title resource
