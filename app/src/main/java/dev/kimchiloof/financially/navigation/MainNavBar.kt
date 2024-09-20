@@ -25,20 +25,23 @@ fun MainNavBar(navController: NavController) {
                 Log.w("MainNavBar", "currentRoute is null, defaulting to '$it'")
             }
 
-        Destination.entries.sortedBy{ it.index }.forEach { destination ->
-            NavigationBarItem(
-                icon = { destination.GetIcon(context) },
-                label = { Text(destination.getTitle(context)) },
-                selected = (currentRoute == destination.route),
-                onClick = {
-                    if (currentRoute != destination.route) {
-                        navController.navigate(destination.route) {
-                            launchSingleTop = true
-                            restoreState = true
+        Destination.entries
+            .filter { it.visible }
+            .sortedBy { it.index }
+            .forEach { destination ->
+                NavigationBarItem(
+                    icon = { destination.GetIcon(context) },
+                    label = { Text(destination.getTitle(context)) },
+                    selected = (currentRoute == destination.route),
+                    onClick = {
+                        if (currentRoute != destination.route) {
+                            navController.navigate(destination.route) {
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     }
-                }
-            )
-        }
+                )
+            }
     }
 }
