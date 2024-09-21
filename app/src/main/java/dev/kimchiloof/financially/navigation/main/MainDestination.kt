@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.navigation
+package dev.kimchiloof.financially.navigation.main
 
 import android.content.Context
 import androidx.annotation.StringRes
@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.kimchiloof.financially.R
 
-enum class Destination(
+enum class MainDestination(
     val visible: Boolean,               // Whether to display in navigation bar
     val index: Int,                     // Order to display in navigation bar
     val route: String,                  // Unique route
@@ -29,10 +29,7 @@ enum class Destination(
     Finances(
         true,1, "finances",
         R.string.navDestinationTitleFinances, Icons.Default.ShoppingCart
-    ),
-
-    NewReceiptCamera(false, -1, "camera", null, null),
-    NewReceiptConfirmation(false, -1, "confirmation", null, null);
+    );
 
     fun getTitle(context: Context): String {
         return title?.let { context.getString(it) } ?: ""

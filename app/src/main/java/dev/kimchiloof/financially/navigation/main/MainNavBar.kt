@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.navigation
+package dev.kimchiloof.financially.navigation.main
 
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +23,7 @@ fun MainNavBar(navController: NavController) {
         val currentRoute = currentBackStackEntry?.destination?.route
         if (currentRoute == null) Log.w("MainNavBar", "currentRoute is null")
 
-        Destination.entries
+        MainDestination.entries
             .filter { it.visible }
             .sortedBy { it.index }
             .forEach { destination ->

@@ -17,8 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import dev.kimchiloof.financially.navigation.MainNavBar
-import dev.kimchiloof.financially.navigation.MainNavGraph
+import dev.kimchiloof.financially.navigation.main.MainNavBar
+import dev.kimchiloof.financially.navigation.main.MainNavGraph
 import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.CameraButton
 import dev.kimchiloof.financially.ui.theme.FinanciallyTheme
 

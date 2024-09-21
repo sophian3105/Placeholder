@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.navigation
+package dev.kimchiloof.financially.navigation.main
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
@@ -12,25 +12,25 @@ import dev.kimchiloof.financially.ui.pages.home.HomeScreen
 @Composable
 fun MainNavGraph (
     navHostController: NavHostController,
-    startDestination: Destination = Destination.Home
+    startDestination: MainDestination = MainDestination.Home
 ) {
     NavHost(
         navController = navHostController,
         startDestination = startDestination.route
     ) {
         composable(
-            route = Destination.Home.route
+            route = MainDestination.Home.route
         ) {
             HomeScreen()
         }
         composable(
-            route = Destination.Finances.route
+            route = MainDestination.Finances.route
         ) {
             BackHandler { resetToHome(navHostController) }
             FinancesScreen()
         }
         composable(
-            route = Destination.Gallery.route
+            route = MainDestination.Gallery.route
         ) {
             BackHandler { resetToHome(navHostController) }
             GalleryScreen()
@@ -40,7 +40,7 @@ fun MainNavGraph (
 
 fun resetToHome(navHostController: NavHostController) {
     // Navigate direct to the Home screen and clear the back stack
-    navHostController.navigate(Destination.Home.route) {
-        popUpTo(Destination.Home.route) { inclusive = true }
+    navHostController.navigate(MainDestination.Home.route) {
+        popUpTo(MainDestination.Home.route) { inclusive = true }
     }
 }

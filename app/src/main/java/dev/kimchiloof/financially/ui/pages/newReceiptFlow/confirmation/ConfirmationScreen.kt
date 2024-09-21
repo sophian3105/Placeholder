@@ -10,7 +10,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.kimchiloof.financially.NewReceiptFlowViewModel
 
 @Composable
-fun NewReceiptConfirmationScreen(viewModel: NewReceiptFlowViewModel = viewModel()) {
+fun ConfirmationScreen(viewModel: NewReceiptFlowViewModel = viewModel()) {
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
