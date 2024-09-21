@@ -70,6 +70,8 @@ dependencies {
     // Coil - image loading
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    // Icons
+    implementation(libs.compose.icons.feather)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
