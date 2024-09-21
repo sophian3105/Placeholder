@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import dev.kimchiloof.financially.navigation.newReceipt.NewReceiptFlowNavGraph
 import dev.kimchiloof.financially.ui.theme.FinanciallyTheme
@@ -14,8 +15,9 @@ class NewReceiptFlowActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FinanciallyTheme {
+                val activityViewModel: NewReceiptFlowViewModel = viewModel()
                 val navController = rememberNavController()
-                NewReceiptFlowNavGraph(navController)
+                NewReceiptFlowNavGraph(navController, activityViewModel)
             }
         }
     }

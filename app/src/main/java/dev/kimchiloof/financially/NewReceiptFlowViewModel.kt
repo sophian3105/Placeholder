@@ -14,22 +14,9 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import dev.kimchiloof.financially.navigation.Destination
 import java.io.File
 
 class NewReceiptFlowViewModel : ViewModel() {
-    // Navigator
-    private lateinit var navController: NavController
-
-    fun setNavController(navController: NavController) {
-        this.navController = navController
-    }
-
-    fun navigateTo(route: String) {
-        navController.navigate(route)
-    }
-
     // Selected or created image
     var selectedImage by mutableStateOf<File?>(null)
 
@@ -45,7 +32,7 @@ class NewReceiptFlowViewModel : ViewModel() {
         return File(context.externalCacheDir, "${System.currentTimeMillis()}.jpg")
     }
 
-    fun takePhoto(context: Context, imageCapture: ImageCapture?, navController: NavController) {
+    fun takePhoto(context: Context, imageCapture: ImageCapture?, onSuccess: () -> Unit, onFail: () -> Unit) {
         if (imageCapture == null) {
             Toast.makeText(context, "Camera not ready", Toast.LENGTH_SHORT).show()
             Log.e("CameraScreen", "Got null imageCapture")
@@ -63,13 +50,13 @@ class NewReceiptFlowViewModel : ViewModel() {
                     Log.d("CameraScreen", "Image captured: ${photoFile.absolutePath}")
                     selectedImage = photoFile
                     Log.e("CameraScreen", "Selected image: ${selectedImage?.absolutePath}")
-                    navController.navigate(Destination.Confirmation.route)
+                    onSuccess()
                 }
 
                 override fun onError(exception: ImageCaptureException) {
                     Toast.makeText(context, "Failed to save image", Toast.LENGTH_SHORT).show()
                     Log.e("CameraScreen", "Failed to save image", exception)
-                    (context as? NewReceiptFlowActivity)?.finish()
+                    onFail()
                 }
             }
         )

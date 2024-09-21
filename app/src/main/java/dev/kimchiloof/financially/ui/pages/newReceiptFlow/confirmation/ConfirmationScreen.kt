@@ -22,7 +22,7 @@ import dev.kimchiloof.financially.NewReceiptFlowViewModel
 import dev.kimchiloof.financially.utils.endActivity
 
 @Composable
-fun ConfirmationScreen(navController: NavController, viewModel: NewReceiptFlowViewModel = viewModel()) {
+fun ConfirmationScreen(navController: NavController, activityViewModel: NewReceiptFlowViewModel = viewModel()) {
     val context = LocalContext.current
 
     Scaffold(
@@ -34,8 +34,8 @@ fun ConfirmationScreen(navController: NavController, viewModel: NewReceiptFlowVi
                 .padding(paddingValues)
         ) {
             Text("cofirmation screen")
-            Log.e("ConfirmationScreen", "Selected image: ${viewModel.selectedImage?.absolutePath}")
-            val path = viewModel.selectedImage?.path
+            Log.e("ConfirmationScreen", "Selected image: ${activityViewModel.selectedImage?.absolutePath}")
+            val path = activityViewModel.selectedImage?.path
             if (path == null) Toast.makeText(LocalContext.current, "whoop", Toast.LENGTH_SHORT).show()
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current).data(path).build(),
