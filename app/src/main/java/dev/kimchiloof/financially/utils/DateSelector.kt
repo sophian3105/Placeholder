@@ -8,18 +8,20 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateSelector(originalDateSeconds: Long, onDateSelected: (Long) -> Unit, onDismiss: () -> Unit) {
-    val originalDateMillis = Instant.ofEpochSecond(originalDateSeconds).toEpochMilli()
+fun DateSelector(originalDate: Long, onDateSelected: (Long) -> Unit, onDismiss: () -> Unit) {
+    val originalDateMillis = LocalDate.ofEpochDay(originalDate).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
     val datePickerState = rememberDatePickerState(initialSelectedDateMillis = originalDateMillis)
 
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = {
-                onDateSelected(Instant.ofEpochMilli(datePickerState.selectedDateMillis ?: originalDateMillis).epochSecond)
+                onDateSelected(Instant.ofEpochMilli(datePickerState.selectedDateMillis ?: originalDateMillis).atOffset(ZoneOffset.UTC).toLocalDate().toEpochDay())
                 onDismiss()
             }) {
                 Text("Confirm")

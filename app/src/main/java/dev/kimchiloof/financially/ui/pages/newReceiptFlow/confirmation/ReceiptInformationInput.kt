@@ -32,6 +32,8 @@ import dev.kimchiloof.financially.NewReceiptFlowViewModel
 import dev.kimchiloof.financially.navigation.Destination
 import dev.kimchiloof.financially.utils.DateSelector
 import dev.kimchiloof.financially.utils.endActivity
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -42,7 +44,7 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
 
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableDoubleStateOf(0.0) }
-    var date by rememberSaveable { mutableLongStateOf(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) }
+    var date by rememberSaveable { mutableLongStateOf(LocalDate.now().toEpochDay()) }
     var category by rememberSaveable { mutableStateOf("") }
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -98,7 +100,7 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
             )
             if (showDatePicker) {
                 DateSelector(
-                    originalDateSeconds = date,
+                    originalDate = date,
                     onDateSelected = { date = it },
                     onDismiss = { showDatePicker = false }
                 )
