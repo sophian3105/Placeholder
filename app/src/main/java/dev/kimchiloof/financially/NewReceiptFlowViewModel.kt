@@ -61,4 +61,20 @@ class NewReceiptFlowViewModel : ViewModel() {
             }
         )
     }
+
+    fun deleteImage(image: File? = selectedImage) {
+        if (image == null) {
+            Log.w("NewReceiptFlowViewModel", "Did not delete null image")
+            return
+        }
+
+        try {
+            image.delete()
+            if (image.absolutePath == selectedImage?.absolutePath) {
+                selectedImage = null
+            }
+        } catch (e: Exception) {
+            Log.e("NewReceiptFlowViewModel", "Failed to delete image", e)
+        }
+    }
 }

@@ -31,7 +31,7 @@ fun NewReceiptFlowNavGraph (
         }
         composable(route = Destination.Confirmation.route) {
             BackHandler {
-                // TODO: Delete the image file
+                activityViewModel.deleteImage()
                 navHostController.endActivity(context)
             }
             ConfirmationScreen(navHostController, activityViewModel)
