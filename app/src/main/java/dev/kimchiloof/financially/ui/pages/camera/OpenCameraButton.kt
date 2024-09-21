@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import compose.icons.FeatherIcons
-import compose.icons.feathericons.Camera
+import compose.icons.feathericons.Plus
 
 @Composable
 fun CameraButton(
@@ -46,5 +46,5 @@ fun CameraButton(
         contentPadding = PaddingValues(0.dp),
         shape = CircleShape,
         onClick = { permissionLauncher.launch(permission) }
-    ) { Icon(imageVector = FeatherIcons.Camera, contentDescription = "Open Camera") }
+    ) { Icon(imageVector = FeatherIcons.Plus, contentDescription = "Open Camera") }
 }
