@@ -35,7 +35,9 @@ fun CameraScreen(viewModel: CameraViewModel = viewModel()) {
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            CameraPreview(onImageCapturedCallback = { imageCapture = it })
+            CameraPreview(
+                onImageCapturedCallback = { imageCapture = it }
+            )
         }
     }
 }

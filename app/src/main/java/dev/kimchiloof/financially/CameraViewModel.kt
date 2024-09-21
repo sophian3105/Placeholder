@@ -9,11 +9,20 @@ import androidx.camera.core.ImageCapture.OutputFileOptions
 import androidx.camera.core.ImageCapture.OutputFileResults
 import androidx.camera.core.ImageCaptureException
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.io.File
 
 class CameraViewModel : ViewModel() {
-    private fun getPhotoFile(context: Context): File {
+    // Camera selector
+    val useBackCamera = MutableLiveData(true)
+
+    fun flipCamera() {
+        useBackCamera.value = !(useBackCamera.value ?: true)
+    }
+
+    // Capture images
+    private fun getNewPhotoFile(context: Context): File {
         return File(context.externalCacheDir, "${System.currentTimeMillis()}.jpg")
     }
 
@@ -24,7 +33,7 @@ class CameraViewModel : ViewModel() {
             return
         }
 
-        val photoFile = getPhotoFile(context)
+        val photoFile = getNewPhotoFile(context)
 
         imageCapture.takePicture(
             OutputFileOptions.Builder(photoFile).build(),
@@ -40,9 +49,5 @@ class CameraViewModel : ViewModel() {
                 }
             }
         )
-    }
-
-    fun flipCamera() {
-        TODO("Not yet implemented")
     }
 }

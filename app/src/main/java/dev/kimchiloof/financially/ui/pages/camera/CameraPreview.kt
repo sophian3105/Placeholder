@@ -10,17 +10,22 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.kimchiloof.financially.CameraViewModel
 
 @Composable
-fun CameraPreview(onImageCapturedCallback: (ImageCapture) -> Unit) {
+fun CameraPreview(onImageCapturedCallback: (ImageCapture) -> Unit, viewModel: CameraViewModel = viewModel()) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
+    val useBackCamera by viewModel.useBackCamera.observeAsState(true)
     // Avoid re-creating the camera provider and preview on recomposition
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     val previewView = remember { PreviewView(context).apply { scaleType = PreviewView.ScaleType.FILL_CENTER } }
@@ -32,7 +37,7 @@ fun CameraPreview(onImageCapturedCallback: (ImageCapture) -> Unit) {
         val cameraProvider = cameraProviderFuture.get()
         val preview = Preview.Builder().build().also { it.setSurfaceProvider(view.surfaceProvider) }
 
-        val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+        val cameraSelector = if (useBackCamera) CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
         val imageCapture = ImageCapture.Builder().build()
 
         try {
