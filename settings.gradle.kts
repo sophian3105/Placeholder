@@ -13,6 +13,11 @@ pluginManagement {
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    versionCatalogs {
+        create("libs") {
+            files("libs.versions.toml")
+        }
+    }
     repositories {
         google()
         mavenCentral()
@@ -21,4 +26,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Financially"
 include(":app")
- 

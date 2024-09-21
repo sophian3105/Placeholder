@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.kimchiloof.financially.NewReceiptFlowViewModel
+import dev.kimchiloof.financially.data.receipt.Receipt
 import dev.kimchiloof.financially.navigation.Destination
 import dev.kimchiloof.financially.utils.DateSelector
 import dev.kimchiloof.financially.utils.endActivity
@@ -41,6 +43,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ReceiptInformationInput(navController: NavController, activityViewModel: NewReceiptFlowViewModel) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableDoubleStateOf(0.0) }
@@ -50,6 +53,18 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
     var showDatePicker by remember { mutableStateOf(false) }
     var validAmount by remember { mutableStateOf(true) }
     var amountText by remember { mutableStateOf("")}
+
+    suspend fun saveReceipt() {
+        val image = activityViewModel.receiptImage ?: return
+        val receipt = Receipt(
+            name = name,
+            amount = amount,
+            image = image,
+            date = LocalDate.ofEpochDay(date),
+            category = category
+        )
+        activityViewModel.insertReceipt(receipt)
+    }
 
     Column (
         modifier = Modifier.padding(24.dp),
@@ -119,7 +134,7 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
                 Text("Retake Image")
             }
             Button(
-                onClick = { navController.endActivity(context) }
+                onClick = { coroutineScope.launch { saveReceipt() }; navController.endActivity(context) }
             ) {
                 Text("Save")
             }

@@ -1,5 +1,6 @@
 package dev.kimchiloof.financially
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -14,11 +15,13 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import dev.kimchiloof.financially.data.receipt.Receipt
+import dev.kimchiloof.financially.data.receipt.ReceiptDatabase
 import java.io.File
 
-class NewReceiptFlowViewModel : ViewModel() {
+class NewReceiptFlowViewModel(application: Application) : AndroidViewModel(application) {
     // New receipt flow
     var receiptImage by mutableStateOf<File?>(null)
     var receiptName by mutableStateOf("")
@@ -27,6 +30,13 @@ class NewReceiptFlowViewModel : ViewModel() {
     var receiptCategory by mutableStateOf("")
 
     // ================
+
+    val database = ReceiptDatabase.getDatabase(application)
+    val dao = database.receiptDao()
+
+    suspend fun insertReceipt(receipt: Receipt) {
+        dao.insert(receipt)
+    }
 
     // Camera selector
     val useBackCamera = MutableLiveData(true)
