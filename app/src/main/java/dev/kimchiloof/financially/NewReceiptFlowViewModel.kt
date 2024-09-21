@@ -9,6 +9,8 @@ import androidx.camera.core.ImageCapture.OutputFileOptions
 import androidx.camera.core.ImageCapture.OutputFileResults
 import androidx.camera.core.ImageCaptureException
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
@@ -17,8 +19,14 @@ import androidx.lifecycle.ViewModel
 import java.io.File
 
 class NewReceiptFlowViewModel : ViewModel() {
-    // Selected or created image
-    var selectedImage by mutableStateOf<File?>(null)
+    // New receipt flow
+    var receiptImage by mutableStateOf<File?>(null)
+    var receiptName by mutableStateOf("")
+    var receiptAmount by mutableDoubleStateOf(0.0)
+    var receiptDate by mutableLongStateOf(System.currentTimeMillis())
+    var receiptCategory by mutableStateOf("")
+
+    // ================
 
     // Camera selector
     val useBackCamera = MutableLiveData(true)
@@ -48,8 +56,8 @@ class NewReceiptFlowViewModel : ViewModel() {
             object : OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: OutputFileResults) {
                     Log.d("CameraScreen", "Image captured: ${photoFile.absolutePath}")
-                    selectedImage = photoFile
-                    Log.e("CameraScreen", "Selected image: ${selectedImage?.absolutePath}")
+                    receiptImage = photoFile
+                    Log.e("CameraScreen", "Selected image: ${receiptImage?.absolutePath}")
                     onSuccess()
                 }
 
@@ -62,7 +70,7 @@ class NewReceiptFlowViewModel : ViewModel() {
         )
     }
 
-    fun deleteImage(image: File? = selectedImage) {
+    fun deleteImage(image: File? = receiptImage) {
         if (image == null) {
             Log.w("NewReceiptFlowViewModel", "Did not delete null image")
             return
@@ -70,9 +78,10 @@ class NewReceiptFlowViewModel : ViewModel() {
 
         try {
             image.delete()
-            if (image.absolutePath == selectedImage?.absolutePath) {
-                selectedImage = null
+            if (image.absolutePath == receiptImage?.absolutePath) {
+                receiptImage = null
             }
+            Log.i("NewReceiptFlowViewModel", "Deleted image: ${image.absolutePath}")
         } catch (e: Exception) {
             Log.e("NewReceiptFlowViewModel", "Failed to delete image", e)
         }

@@ -30,9 +30,14 @@ fun NewReceiptFlowNavGraph (
             CameraScreen(navHostController, activityViewModel)
         }
         composable(route = Destination.Confirmation.route) {
-            BackHandler {
+            val backStackEntry = navHostController.previousBackStackEntry
+            val previousRoute = backStackEntry?.destination?.route
+
+            BackHandler (
+                enabled = (previousRoute == Destination.Camera.route)
+            ) {
                 activityViewModel.deleteImage()
-                navHostController.endActivity(context)
+                navHostController.popBackStack()
             }
             ConfirmationScreen(navHostController, activityViewModel)
         }

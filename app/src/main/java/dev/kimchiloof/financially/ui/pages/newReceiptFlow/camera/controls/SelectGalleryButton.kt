@@ -45,7 +45,7 @@ fun SelectGalleryButton(activityViewModel: NewReceiptFlowViewModel, onSuccess: (
                     inputStream.close()
                     onFail()
                 }
-                activityViewModel.selectedImage = outputFile
+                activityViewModel.receiptImage = outputFile
                 inputStream.close()
                 onSuccess()
             }
