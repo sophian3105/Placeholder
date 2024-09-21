@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CameraActivity"
+            android:name=".NewReceiptFlowActivity"
             android:exported="true"
             android:label="camera"
             android:theme="@style/Theme.Financially">

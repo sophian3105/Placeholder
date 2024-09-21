@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.ui.pages.camera.controls
+package dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton

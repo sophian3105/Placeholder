@@ -15,8 +15,8 @@ enum class Destination(
     val visible: Boolean,               // Whether to display in navigation bar
     val index: Int,                     // Order to display in navigation bar
     val route: String,                  // Unique route
-    @StringRes private val title: Int,  // Title resource
-    private val icon: ImageVector       // Icon to display
+    @StringRes private val title: Int?,  // Title resource
+    private val icon: ImageVector?       // Icon to display
 ) {
     Gallery(
         true, -1, "gallery",
@@ -29,14 +29,19 @@ enum class Destination(
     Finances(
         true,1, "finances",
         R.string.navDestinationTitleFinances, Icons.Default.ShoppingCart
-    );
+    ),
+
+    NewReceiptCamera(false, -1, "camera", null, null),
+    NewReceiptConfirmation(false, -1, "confirmation", null, null);
 
     fun getTitle(context: Context): String {
-        return context.getString(title)
+        return title?.let { context.getString(it) } ?: ""
     }
 
     @Composable
     fun GetIcon(context: Context) {
-        Icon(imageVector = icon, contentDescription = getTitle(context))
+        if (icon != null) {
+            Icon(imageVector = icon, contentDescription = getTitle(context))
+        }
     }
 }

@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.ui.pages.camera
+package dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera
 
 import android.util.Log
 import android.widget.Toast
@@ -18,10 +18,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.kimchiloof.financially.CameraViewModel
+import dev.kimchiloof.financially.NewReceiptFlowViewModel
 
 @Composable
-fun CameraPreview(onImageCapturedCallback: (ImageCapture) -> Unit, viewModel: CameraViewModel = viewModel()) {
+fun CameraPreview(onImageCapturedCallback: (ImageCapture) -> Unit, viewModel: NewReceiptFlowViewModel = viewModel()) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 

@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.ui.pages.camera.controls
+package dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls
 
 import android.Manifest
 import android.graphics.Bitmap

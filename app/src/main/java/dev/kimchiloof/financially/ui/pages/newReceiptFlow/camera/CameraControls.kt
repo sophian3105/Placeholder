@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.ui.pages.camera
+package dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.kimchiloof.financially.ui.pages.camera.controls.CaptureButton
-import dev.kimchiloof.financially.ui.pages.camera.controls.FlipCameraButton
-import dev.kimchiloof.financially.ui.pages.camera.controls.SelectGalleryButton
+import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls.CaptureButton
+import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls.FlipCameraButton
+import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls.SelectGalleryButton
 
 @Composable
 fun CameraControls(

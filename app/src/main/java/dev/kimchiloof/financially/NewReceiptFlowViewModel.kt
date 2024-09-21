@@ -13,7 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.io.File
 
-class CameraViewModel : ViewModel() {
+class NewReceiptFlowViewModel : ViewModel() {
     // Camera selector
     val useBackCamera = MutableLiveData(true)
 

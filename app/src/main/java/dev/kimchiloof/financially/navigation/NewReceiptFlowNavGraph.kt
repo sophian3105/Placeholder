@@ -6,11 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.kimchiloof.financially.ui.pages.finances.FinancesScreen
-import dev.kimchiloof.financially.ui.pages.gallery.GalleryScreen
-import dev.kimchiloof.financially.ui.pages.home.HomeScreen
+import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.CameraScreen
 
 @Composable
-fun MainNavGraph (
+fun NewReceiptFlowNavGraph (
     navHostController: NavHostController,
     startDestination: Destination = Destination.Home
 ) {
@@ -19,28 +18,19 @@ fun MainNavGraph (
         startDestination = startDestination.route
     ) {
         composable(
-            route = Destination.Home.route
-        ) {
-            HomeScreen()
-        }
-        composable(
-            route = Destination.Finances.route
+            route = Destination.NewReceiptCamera.route
         ) {
             BackHandler { resetToHome(navHostController) }
+            CameraScreen()
+        }
+        composable(
+            route = Destination.NewReceiptConfirmation.route
+        ) {
+            BackHandler {
+                // TODO: Delete the image file
+                resetToHome(navHostController)
+            }
             FinancesScreen()
         }
-        composable(
-            route = Destination.Gallery.route
-        ) {
-            BackHandler { resetToHome(navHostController) }
-            GalleryScreen()
-        }
-    }
-}
-
-fun resetToHome(navHostController: NavHostController) {
-    // Navigate direct to the Home screen and clear the back stack
-    navHostController.navigate(Destination.Home.route) {
-        popUpTo(Destination.Home.route) { inclusive = true }
     }
 }

@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import dev.kimchiloof.financially.navigation.MainNavBar
 import dev.kimchiloof.financially.navigation.MainNavGraph
-import dev.kimchiloof.financially.ui.pages.camera.CameraButton
+import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.CameraButton
 import dev.kimchiloof.financially.ui.theme.FinanciallyTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     floatingActionButton = { CameraButton { granted ->
                         if (granted) {
                             startActivity(
-                                Intent(this@MainActivity, CameraActivity::class.java)
+                                Intent(this@MainActivity, NewReceiptFlowActivity::class.java)
                             )
                         } else {
                             Toast.makeText(

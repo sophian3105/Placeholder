@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.ui.pages.camera
+package dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera
 
 import android.Manifest
 import androidx.compose.foundation.layout.PaddingValues

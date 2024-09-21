@@ -1,4 +1,4 @@
-package dev.kimchiloof.financially.ui.pages.camera
+package dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera
 
 import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.layout.Column
@@ -13,10 +13,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.kimchiloof.financially.CameraViewModel
+import dev.kimchiloof.financially.NewReceiptFlowViewModel
 
 @Composable
-fun CameraScreen(viewModel: CameraViewModel = viewModel()) {
+fun CameraScreen(viewModel: NewReceiptFlowViewModel = viewModel()) {
     val context = LocalContext.current
     var imageCapture: ImageCapture? by remember { mutableStateOf(null) }
 
