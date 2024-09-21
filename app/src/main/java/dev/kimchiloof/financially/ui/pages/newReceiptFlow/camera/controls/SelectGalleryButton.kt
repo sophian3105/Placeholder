@@ -16,7 +16,7 @@ import compose.icons.FeatherIcons
 import compose.icons.feathericons.FolderPlus
 import dev.kimchiloof.financially.NewReceiptFlowActivity
 import dev.kimchiloof.financially.NewReceiptFlowViewModel
-import dev.kimchiloof.financially.navigation.newReceipt.NewReceiptDestination
+import dev.kimchiloof.financially.navigation.Destination
 import dev.kimchiloof.financially.utils.GetPermission
 import java.io.InputStream
 import java.io.OutputStream
@@ -41,11 +41,12 @@ fun SelectGalleryButton(navController: NavController, viewModel: NewReceiptFlowV
             } catch (e: Exception) {
                 Toast.makeText(context, "Failed to save image to file", Toast.LENGTH_SHORT).show()
                 Log.e("SelectGalleryButton", "Failed to save image to file", e)
+                inputStream?.close()
                 (context as? NewReceiptFlowActivity)?.finish()
             } finally {
-                viewModel.selectedImage.value = outputFile
-                navController.navigate(NewReceiptDestination.NewReceiptConfirmation.route)
+                viewModel.selectedImage = outputFile
                 inputStream?.close()
+                navController.navigate(Destination.Confirmation.route)
             }
         }
     }

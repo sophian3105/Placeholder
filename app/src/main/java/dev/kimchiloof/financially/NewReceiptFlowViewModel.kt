@@ -8,16 +8,30 @@ import androidx.camera.core.ImageCapture.OnImageSavedCallback
 import androidx.camera.core.ImageCapture.OutputFileOptions
 import androidx.camera.core.ImageCapture.OutputFileResults
 import androidx.camera.core.ImageCaptureException
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import dev.kimchiloof.financially.navigation.newReceipt.NewReceiptDestination
+import dev.kimchiloof.financially.navigation.Destination
 import java.io.File
 
 class NewReceiptFlowViewModel : ViewModel() {
+    // Navigator
+    private lateinit var navController: NavController
+
+    fun setNavController(navController: NavController) {
+        this.navController = navController
+    }
+
+    fun navigateTo(route: String) {
+        navController.navigate(route)
+    }
+
     // Selected or created image
-    var selectedImage = MutableLiveData<File?>()
+    var selectedImage by mutableStateOf<File?>(null)
 
     // Camera selector
     val useBackCamera = MutableLiveData(true)
@@ -47,8 +61,9 @@ class NewReceiptFlowViewModel : ViewModel() {
             object : OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: OutputFileResults) {
                     Log.d("CameraScreen", "Image captured: ${photoFile.absolutePath}")
-                    selectedImage.value = photoFile
-                    navController.navigate(NewReceiptDestination.NewReceiptConfirmation.route)
+                    selectedImage = photoFile
+                    Log.e("CameraScreen", "Selected image: ${selectedImage?.absolutePath}")
+                    navController.navigate(Destination.Confirmation.route)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
