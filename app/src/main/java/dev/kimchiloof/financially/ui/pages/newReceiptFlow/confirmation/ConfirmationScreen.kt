@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -22,7 +21,7 @@ import dev.kimchiloof.financially.NewReceiptFlowViewModel
 import dev.kimchiloof.financially.utils.endActivity
 
 @Composable
-fun ConfirmationScreen(navController: NavController, activityViewModel: NewReceiptFlowViewModel = viewModel()) {
+fun ConfirmationScreen(navController: NavController, activityViewModel: NewReceiptFlowViewModel) {
     val context = LocalContext.current
 
     Scaffold(
