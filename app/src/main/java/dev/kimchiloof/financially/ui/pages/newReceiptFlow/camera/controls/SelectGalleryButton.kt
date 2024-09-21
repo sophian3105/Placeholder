@@ -1,48 +1,53 @@
 package dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls
 
 import android.Manifest
-import android.graphics.Bitmap
 import android.net.Uri
-import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import compose.icons.FeatherIcons
 import compose.icons.feathericons.FolderPlus
+import dev.kimchiloof.financially.NewReceiptFlowActivity
+import dev.kimchiloof.financially.NewReceiptFlowViewModel
+import dev.kimchiloof.financially.navigation.newReceipt.NewReceiptDestination
 import dev.kimchiloof.financially.utils.GetPermission
 import java.io.InputStream
+import java.io.OutputStream
 
 @Composable
-fun SelectGalleryButton() {
+fun SelectGalleryButton(navController: NavController, viewModel: NewReceiptFlowViewModel = viewModel()) {
     val context = LocalContext.current
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
     // Register for activity result to pick an image from the gallery
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        imageUri = uri
-        uri?.let {
+        if (uri == null) {
+            Log.e("SelectGalleryButton", "Failed to get image from gallery")
+        } else {
             val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
-            bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-        }
-    }
+            val outputFile = viewModel.getNewPhotoFile(context)
 
-    bitmap?.let {
-        Image(bitmap = it.asImageBitmap(), contentDescription = "Selected image", modifier = Modifier.size(300.dp))
+            try {
+                val outputStream: OutputStream = outputFile.outputStream()
+                inputStream?.copyTo(outputStream)
+            } catch (e: Exception) {
+                Toast.makeText(context, "Failed to save image to file", Toast.LENGTH_SHORT).show()
+                Log.e("SelectGalleryButton", "Failed to save image to file", e)
+                (context as? NewReceiptFlowActivity)?.finish()
+            } finally {
+                viewModel.selectedImage.value = outputFile
+                navController.navigate(NewReceiptDestination.NewReceiptConfirmation.route)
+                inputStream?.close()
+            }
+        }
     }
 
     GetPermission(

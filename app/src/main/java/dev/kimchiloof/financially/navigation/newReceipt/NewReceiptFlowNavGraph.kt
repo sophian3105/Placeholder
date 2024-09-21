@@ -28,14 +28,14 @@ fun NewReceiptFlowNavGraph (
     ) {
         composable(route = NewReceiptDestination.NewReceiptCamera.route) {
             BackHandler { resetToHome(context) }
-            CameraScreen()
+            CameraScreen(navHostController)
         }
         composable(route = NewReceiptDestination.NewReceiptConfirmation.route) {
             BackHandler {
                 // TODO: Delete the image file
                 resetToHome(context)
             }
-            ConfirmationScreen()
+            ConfirmationScreen(navHostController)
         }
     }
 }

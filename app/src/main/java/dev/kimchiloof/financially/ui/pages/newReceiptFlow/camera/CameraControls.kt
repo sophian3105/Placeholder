@@ -8,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls.CaptureButton
 import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls.FlipCameraButton
 import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.controls.SelectGalleryButton
 
 @Composable
 fun CameraControls(
+    navController: NavController,
     flipCameraCallback: () -> Unit = {},
     captureCameraCallback: () -> Unit = {},
 ) {
@@ -22,7 +24,7 @@ fun CameraControls(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SelectGalleryButton()
+        SelectGalleryButton(navController)
         CaptureButton(captureCameraCallback)
         FlipCameraButton(flipCameraCallback)
     }

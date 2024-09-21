@@ -13,18 +13,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import dev.kimchiloof.financially.NewReceiptFlowViewModel
 
 @Composable
-fun CameraScreen(viewModel: NewReceiptFlowViewModel = viewModel()) {
+fun CameraScreen(navController: NavController, viewModel: NewReceiptFlowViewModel = viewModel()) {
     val context = LocalContext.current
     var imageCapture: ImageCapture? by remember { mutableStateOf(null) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = { CameraControls(
+            navController = navController,
             flipCameraCallback = { viewModel.flipCamera() },
-            captureCameraCallback = { viewModel.takePhoto(context, imageCapture) }
+            captureCameraCallback = { viewModel.takePhoto(context, imageCapture, navController) }
         ) },
     ) { paddingValues ->
         Column (
