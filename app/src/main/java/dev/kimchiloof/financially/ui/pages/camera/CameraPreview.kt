@@ -35,7 +35,7 @@ fun CameraPreview(onImageCapturedCallback: (ImageCapture) -> Unit, viewModel: Ca
         modifier = Modifier.fillMaxHeight()
     ) { view ->
         val cameraProvider = cameraProviderFuture.get()
-        val preview = Preview.Builder().build().also { it.setSurfaceProvider(view.surfaceProvider) }
+        val preview = Preview.Builder().build().apply { setSurfaceProvider(view.surfaceProvider) }
 
         val cameraSelector = if (useBackCamera) CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
         val imageCapture = ImageCapture.Builder().build()
