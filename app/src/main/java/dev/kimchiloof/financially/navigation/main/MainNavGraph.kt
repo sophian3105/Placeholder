@@ -14,6 +14,13 @@ fun MainNavGraph (
     navHostController: NavHostController,
     startDestination: MainDestination = MainDestination.Home
 ) {
+    fun resetToHome() {
+        // Navigate direct to the Home screen and clear the back stack
+        navHostController.navigate(MainDestination.Home.route) {
+            popUpTo(MainDestination.Home.route) { inclusive = true }
+        }
+    }
+
     NavHost(
         navController = navHostController,
         startDestination = startDestination.route
@@ -26,21 +33,14 @@ fun MainNavGraph (
         composable(
             route = MainDestination.Finances.route
         ) {
-            BackHandler { resetToHome(navHostController) }
+            BackHandler { resetToHome() }
             FinancesScreen()
         }
         composable(
             route = MainDestination.Gallery.route
         ) {
-            BackHandler { resetToHome(navHostController) }
+            BackHandler { resetToHome() }
             GalleryScreen()
         }
-    }
-}
-
-fun resetToHome(navHostController: NavHostController) {
-    // Navigate direct to the Home screen and clear the back stack
-    navHostController.navigate(MainDestination.Home.route) {
-        popUpTo(MainDestination.Home.route) { inclusive = true }
     }
 }
