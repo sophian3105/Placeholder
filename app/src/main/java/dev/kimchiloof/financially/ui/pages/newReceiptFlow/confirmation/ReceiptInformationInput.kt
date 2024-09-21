@@ -46,36 +46,44 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
     var category by rememberSaveable { mutableStateOf("") }
 
     var showDatePicker by remember { mutableStateOf(false) }
+    var validAmount by remember { mutableStateOf(true) }
+    var amountText by remember { mutableStateOf("")}
 
     Column (
         modifier = Modifier.padding(24.dp),
-        verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 value = name,
                 label = { Text("Name") },
+                singleLine = true,
                 onValueChange = { name = it },
+                modifier = Modifier.fillMaxWidth()
             )
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text("Category:")
             OutlinedTextField(
                 value = category,
                 label = { Text("Category") },
+                singleLine = true,
                 onValueChange = { category = it },
+                modifier = Modifier.fillMaxWidth()
             )
         }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text("Amount:")
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
-                value = amount.toString(),
-                onValueChange = { amount = it.toDouble() },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                value = amountText,
+                label = { Text("Amount") },
+                prefix = { Text("$") },
+                onValueChange = {
+                    try { amount = it.toDouble(); validAmount = true; amountText = it }
+                    catch (e: NumberFormatException) { validAmount = false } },
+                isError = !validAmount,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.weight(1f)
             )
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text("Date:")
             OutlinedTextField(
                 value = LocalDateTime.ofEpochSecond(date, 0, ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE),
                 onValueChange = { },
@@ -85,7 +93,8 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
                     IconButton(onClick = { showDatePicker = !showDatePicker }) {
                         Icon(imageVector = Icons.Default.DateRange, contentDescription = "Select date")
                     }
-                }
+                },
+                modifier = Modifier.weight(1f)
             )
             if (showDatePicker) {
                 DateSelector(
