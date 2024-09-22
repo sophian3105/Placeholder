@@ -4,7 +4,7 @@ Save your receipts and track your spending.
 
 ## Built on
 
-- Android Jetpack Compose
+- Android Jetpack Compose - migrated from legacy XML UI
 - Room SQL-based database
 - Working on image-to-text recognition with ML Kit and potentially an [in-house](https://github.com/kimchiloof/Placeholder-AI) image-to-text model built on Tensorflow
 
