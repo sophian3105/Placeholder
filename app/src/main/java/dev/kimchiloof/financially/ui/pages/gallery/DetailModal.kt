@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,7 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -116,11 +119,13 @@ fun ViewAndEditDetailsSection(viewModel: MainViewModel, receipt: Receipt, edit: 
 @Composable
 fun ViewDetailsSection(receipt: Receipt) {
     Column {
-        Text("Name: ${receipt.name}")
-        Text("Date: ${receipt.date}")
-        Text("Amount: ${receipt.amount}")
-        Text("Category: ${receipt.category}")
-        Text("Date created: ${receipt.dateCreated}")
+        Text(text = receipt.name, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        HorizontalDivider(thickness = 1.dp, color = Color.White, modifier = Modifier.padding(0.dp, 4.dp))
+        Text(text = receipt.category)
+        Text(text = "$ " + receipt.amount.toString())
+        Text(text = receipt.date.format(Constants.DATE_FORMAT))
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Added on: " + receipt.dateCreated.format(Constants.DATE_FORMAT))
     }
 }
 
@@ -141,7 +146,7 @@ fun EditDetailsSection(viewModel: MainViewModel, receipt: Receipt, saveNow: Bool
         onDateChange = { date = it },
         onCategoryChange = { category = it }
     )
-    Log.d("EditDetailsSection", "saveNow: $saveNow, name: $name, amount: $amount, date: $date, category: $category")
+
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(saveNow) {
         if (saveNow) {
