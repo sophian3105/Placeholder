@@ -32,13 +32,11 @@ import androidx.navigation.NavController
 import dev.kimchiloof.financially.NewReceiptFlowViewModel
 import dev.kimchiloof.financially.data.receipt.Receipt
 import dev.kimchiloof.financially.navigation.Destination
+import dev.kimchiloof.financially.utils.Constants.Companion.DATE_FORMAT
 import dev.kimchiloof.financially.utils.DateSelector
 import dev.kimchiloof.financially.utils.endActivity
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ReceiptInformationInput(navController: NavController, activityViewModel: NewReceiptFlowViewModel) {
@@ -102,7 +100,7 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
                 modifier = Modifier.weight(1f)
             )
             OutlinedTextField(
-                value = LocalDateTime.ofEpochSecond(date, 0, ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE),
+                value = LocalDate.ofEpochDay(date).format(DATE_FORMAT),
                 onValueChange = { },
                 label = { Text("Date") },
                 readOnly = true,
