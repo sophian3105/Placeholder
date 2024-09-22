@@ -3,10 +3,11 @@ package dev.kimchiloof.financially.data.receipt
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import dev.kimchiloof.financially.utils.Constants.Companion.DATABASE_NAME
 import java.io.File
 import java.time.LocalDate
 
-@Entity(tableName = "receipts")
+@Entity(tableName = DATABASE_NAME)
 data class Receipt(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
