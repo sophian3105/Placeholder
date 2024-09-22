@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import dev.kimchiloof.financially.utils.Constants
 
 @Database(entities = [Receipt::class], version = 2)
 @TypeConverters(ReceiptConverters::class)
@@ -20,7 +21,7 @@ abstract class ReceiptDatabase : RoomDatabase() {
         fun getDatabase(context: Context): ReceiptDatabase {
             // Maintain single database instance
             return Instance ?: synchronized(this) {
-                val instance = Room.databaseBuilder(context.applicationContext, ReceiptDatabase::class.java, "receiptDatabase")
+                val instance = Room.databaseBuilder(context.applicationContext, ReceiptDatabase::class.java, Constants.DATABASE_NAME)
                     .fallbackToDestructiveMigration()
                     .addTypeConverter(ReceiptConverters())
                     .build()
