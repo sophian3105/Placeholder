@@ -6,6 +6,7 @@ Save your receipts and track your spending.
 
 - Android Jetpack Compose
 - Room SQL-based database
+- Working on image-to-text recognition with ML Kit and potentially an [in-house](https://github.com/kimchiloof/Placeholder-AI) image-to-text model built on Tensorflow
 
 ## Build
 
