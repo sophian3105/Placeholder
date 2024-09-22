@@ -4,7 +4,9 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import dev.kimchiloof.financially.data.receipt.Receipt
 import dev.kimchiloof.financially.data.receipt.ReceiptDatabase
+import java.time.LocalDate
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = ReceiptDatabase.getDatabase(application)
@@ -14,7 +16,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val spendingGoal = MutableLiveData(sharedPreferences.getString("spending_goal", "") ?: "")
     val amountSpent = MutableLiveData(sharedPreferences.getFloat("amount_spent", 0.0f).toDouble())
 
+    suspend fun deleteReceipt(receipt: Receipt) { dao.delete(receipt) }
     fun getAllReceipts() = dao.getAllReceipts()
+    fun getFilteredReceipts(
+        name: String?,
+        start: LocalDate?,
+        end: LocalDate?,
+        min: Double?,
+        max: Double?,
+        category: String?
+    ) = dao.getFilteredReceipts(name, start, end, min, max, category)
 
     fun saveSpendingGoal(goal: String) {
         sharedPreferences.edit().putString("spending_goal", goal).apply()

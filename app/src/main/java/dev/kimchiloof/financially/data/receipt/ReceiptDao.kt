@@ -23,9 +23,21 @@ interface ReceiptDao {
     @Query("SELECT * FROM receipts")
     fun getAllReceipts(): Flow<List<Receipt?>>
 
-    @Query("SELECT * from receipts WHERE category = :category")
-    fun getReceiptsByCategory(category: String): Flow<List<Receipt?>>
-
-    @Query("SELECT * from receipts WHERE date = :date")
-    fun getReceipt(date: LocalDate): Flow<Receipt?>
+    @Query("""
+        SELECT * FROM receipts
+        WHERE (:name IS NULL OR name LIKE '%' || :name || '%')
+        AND (:category IS NULL OR category LIKE '%' || :category || '%')
+        AND (:min IS NULL OR amount >= :min)
+        AND (:max IS NULL OR amount <= :max)
+        AND (:start IS NULL OR date >= :start)
+        AND (:end IS NULL OR date <= :end)
+    """)
+    fun getFilteredReceipts(
+        name: String?,
+        start: LocalDate?,
+        end: LocalDate?,
+        min: Double?,
+        max: Double?,
+        category: String?
+    ): Flow<List<Receipt?>>
 }
