@@ -1,6 +1,7 @@
 package dev.kimchiloof.financially.ui.pages.newReceiptFlow.confirmation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,7 +34,7 @@ fun ConfirmationScreen(navController: NavController, activityViewModel: NewRecei
             AsyncImage(
                 model = ImageRequest.Builder(context).data(path).build(),
                 contentDescription = "Captured image",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxHeight().fillMaxWidth()
             )
         }
     }
