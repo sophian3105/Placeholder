@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.kimchiloof.financially.MainViewModel
@@ -22,12 +25,28 @@ fun FinancesScreen(viewModel: MainViewModel = viewModel()) {
     val context = LocalContext.current
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = { showDatePicker = true }) {
-            Text(text = "Select Date")
+        FinanceHeader() // Place the header at the top
+
+        Spacer(modifier = Modifier.height(16.dp)) // Add spacer
+
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Button(onClick = { showDatePicker = true }) {
+                Text(text = "Select Date")
+            }
         }
 
+        Spacer(modifier = Modifier.height(16.dp)) // Add spacer
+
         selectedDate?.let {
-            Text(text = "Selected Date: ${it.format(DateTimeFormatter.ISO_LOCAL_DATE)}")
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Selected Date: ${it.format(DateTimeFormatter.ISO_LOCAL_DATE)}")
+            }
         }
 
         if (showDatePicker) {
@@ -57,7 +76,26 @@ fun FinancesScreen(viewModel: MainViewModel = viewModel()) {
 
             val totalAmountSpent = filteredReceipts.sumOf { it?.amount ?: 0.0 }
 
-            Text(text = "Total Amount Spent: $totalAmountSpent")
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Total Amount Spent: $totalAmountSpent")
+            }
         }
+    }
+}
+
+@Composable
+fun FinanceHeader() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp, 48.dp, 16.dp, 8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text("Finance", fontSize = 32.sp, fontWeight = FontWeight.Bold)
     }
 }
