@@ -3,11 +3,16 @@ package dev.kimchiloof.financially.ui.pages.gallery
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -17,13 +22,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import compose.icons.FeatherIcons
+import compose.icons.feathericons.Filter
 import dev.kimchiloof.financially.MainViewModel
+import dev.kimchiloof.financially.data.SortMethod
+import dev.kimchiloof.financially.data.SortOrder
 import dev.kimchiloof.financially.utils.Constants.UI.RADIUS
 import java.time.LocalDate
 
@@ -33,6 +43,10 @@ fun GalleryScreen(viewModel: MainViewModel = viewModel()) {
 
     // TODO chunk fetching to avoid loading all receipts at once
     val allReceipts by viewModel.getAllReceipts().collectAsState(initial = emptyList())
+
+    var sortMethod by remember { mutableStateOf(SortMethod.DATE_CREATED) }
+    var sortOrder by remember { mutableStateOf(SortOrder.DESCENDING) }
+    var showSortMethodDropdown by remember { mutableStateOf(false) }
 
     var nameQuery by remember { mutableStateOf("") }
     var categoryQuery by remember { mutableStateOf("") }
@@ -46,19 +60,56 @@ fun GalleryScreen(viewModel: MainViewModel = viewModel()) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp, 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
-                    label = { Text("Search receipts") },
-                    shape = RoundedCornerShape(RADIUS.L.dp),
-                    modifier = Modifier.fillMaxWidth()
-                )
                 Row (
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    IconButton(
+                        onClick = { sortOrder = sortOrder.toggle() },
+                        modifier = Modifier.padding(4.dp)
+                    ) {
+                        // 8.dp padding for FontAwesome icons
+                        Icon(sortOrder.icon, contentDescription = "Sort order", modifier = Modifier.padding(8.dp))
+                    }
+                    OutlinedTextField(
+                        value = "",
+                        onValueChange = {},
+                        label = { Text("Search receipts") },
+                        shape = RoundedCornerShape(RADIUS.L.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton (
+                        onClick = { showSortMethodDropdown = true },
+                        modifier = Modifier.padding(4.dp)
+                    ) {
+                        Icon(FeatherIcons.Filter, contentDescription = "Sort method dropdown")
+                        DropdownMenu(
+                            expanded = showSortMethodDropdown,
+                            onDismissRequest = { showSortMethodDropdown = false }
+                        ) {
+                            Column {
+                                SortMethod.entries.forEach { method ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            sortMethod = method
+                                            showSortMethodDropdown = false
+                                        },
+                                        text = { Text(method.label) }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
                     TextButton (
                         onClick = { },
                         modifier = Modifier.padding(8.dp)

@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.coil.compose)
     // Icons
     implementation(libs.compose.icons.feather)
+    implementation(libs.compose.icons.fontawesome)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

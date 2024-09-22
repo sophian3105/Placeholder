@@ -56,6 +56,7 @@ coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 # Icons - https://github.com/DevSrSouza/compose-icons
 compose-icons-feather = { group = "br.com.devsrsouza.compose.icons", name = "feather", version.ref = "composeIcons" }
+compose-icons-fontawesome = { group = "br.com.devsrsouza.compose.icons", name = "font-awesome", version.ref = "composeIcons" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
