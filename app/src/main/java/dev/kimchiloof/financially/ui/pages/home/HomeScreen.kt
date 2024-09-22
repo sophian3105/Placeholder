@@ -42,6 +42,10 @@ fun HomeScreen(viewModel: MainViewModel = viewModel()) {
                 amountSpent = amountSpent
             )
             Text(
+                text = "Total Amount Spent: \$${amountSpent}",
+                modifier = Modifier.padding(top = 8.dp) // Reduced top padding
+            )
+            Text(
                 text = "Money Left: \$${spendingGoal.toDoubleOrNull()?.minus(amountSpent) ?: 0.0}",
                 modifier = Modifier.padding(top = 8.dp) // Reduced top padding
             )
