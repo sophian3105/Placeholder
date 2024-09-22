@@ -31,12 +31,10 @@ class NewReceiptFlowViewModel(application: Application) : AndroidViewModel(appli
 
     // ================
 
-    val database = ReceiptDatabase.getDatabase(application)
-    val dao = database.receiptDao()
+    private val database = ReceiptDatabase.getDatabase(application)
+    private val dao = database.receiptDao()
 
-    suspend fun insertReceipt(receipt: Receipt) {
-        dao.insert(receipt)
-    }
+    suspend fun insertReceipt(receipt: Receipt) = dao.insert(receipt)
 
     // Camera selector
     val useBackCamera = MutableLiveData(true)
