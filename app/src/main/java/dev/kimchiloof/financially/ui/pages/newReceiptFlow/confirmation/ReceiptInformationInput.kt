@@ -17,7 +17,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -45,7 +44,7 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
 
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableDoubleStateOf(0.0) }
-    var date by rememberSaveable { mutableLongStateOf(LocalDate.now().toEpochDay()) }
+    var date by rememberSaveable { mutableStateOf(LocalDate.now()) }
     var category by rememberSaveable { mutableStateOf("") }
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -58,8 +57,9 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
             name = name,
             amount = amount,
             image = image,
-            date = LocalDate.ofEpochDay(date),
-            category = category
+            date = date,
+            category = category,
+            dateCreated = LocalDate.now()
         )
         activityViewModel.insertReceipt(receipt)
     }
@@ -100,7 +100,7 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
                 modifier = Modifier.weight(1f)
             )
             OutlinedTextField(
-                value = LocalDate.ofEpochDay(date).format(DATE_FORMAT),
+                value = date.format(DATE_FORMAT),
                 onValueChange = { },
                 label = { Text("Date") },
                 readOnly = true,

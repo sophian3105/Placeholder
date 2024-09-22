@@ -23,6 +23,9 @@ interface ReceiptDao {
     @Query("SELECT * FROM receipts")
     fun getAllReceipts(): Flow<List<Receipt?>>
 
+    @Query("SELECT * FROM receipts WHERE id = :id")
+    fun getReceipt(id: Int): Flow<Receipt?>
+
     @Query("""
         SELECT * FROM receipts
         WHERE (:name IS NULL OR name LIKE '%' || :name || '%')

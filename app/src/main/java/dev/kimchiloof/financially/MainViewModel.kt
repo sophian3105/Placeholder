@@ -18,6 +18,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun deleteReceipt(receipt: Receipt) { dao.delete(receipt) }
     fun getAllReceipts() = dao.getAllReceipts()
+    fun getReceipt(id: Int) = dao.getReceipt(id)
     fun getFilteredReceipts(
         name: String?,
         start: LocalDate?,
