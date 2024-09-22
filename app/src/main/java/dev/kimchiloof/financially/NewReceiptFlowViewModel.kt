@@ -10,8 +10,6 @@ import androidx.camera.core.ImageCapture.OutputFileOptions
 import androidx.camera.core.ImageCapture.OutputFileResults
 import androidx.camera.core.ImageCaptureException
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
@@ -24,13 +22,8 @@ import java.io.File
 class NewReceiptFlowViewModel(application: Application) : AndroidViewModel(application) {
     // New receipt flow
     var receiptImage by mutableStateOf<File?>(null)
-    var receiptName by mutableStateOf("")
-    var receiptAmount by mutableDoubleStateOf(0.0)
-    var receiptDate by mutableLongStateOf(System.currentTimeMillis())
-    var receiptCategory by mutableStateOf("")
 
-    // ================
-
+    // Database
     private val database = ReceiptDatabase.getDatabase(application)
     private val dao = database.receiptDao()
 
