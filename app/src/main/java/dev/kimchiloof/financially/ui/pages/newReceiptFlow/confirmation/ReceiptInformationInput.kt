@@ -47,10 +47,6 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
     var date by rememberSaveable { mutableStateOf(LocalDate.now()) }
     var category by rememberSaveable { mutableStateOf("") }
 
-    var showDatePicker by remember { mutableStateOf(false) }
-    var validAmount by remember { mutableStateOf(true) }
-    var amountText by remember { mutableStateOf("")}
-
     suspend fun saveReceipt() {
         val image = activityViewModel.receiptImage ?: return
         val receipt = Receipt(
@@ -68,57 +64,16 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
         modifier = Modifier.padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                value = name,
-                label = { Text("Name") },
-                singleLine = true,
-                onValueChange = { name = it },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                value = category,
-                label = { Text("Category") },
-                singleLine = true,
-                onValueChange = { category = it },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                value = amountText,
-                label = { Text("Amount") },
-                prefix = { Text("$") },
-                onValueChange = {
-                    try { amount = it.toDouble(); validAmount = true; amountText = it }
-                    catch (e: NumberFormatException) { validAmount = false } },
-                isError = !validAmount,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.weight(1f)
-            )
-            OutlinedTextField(
-                value = date.format(DATE_FORMAT),
-                onValueChange = { },
-                label = { Text("Date") },
-                readOnly = true,
-                trailingIcon = {
-                    IconButton(onClick = { showDatePicker = !showDatePicker }) {
-                        Icon(imageVector = Icons.Default.DateRange, contentDescription = "Select date")
-                    }
-                },
-                modifier = Modifier.weight(1f)
-            )
-            if (showDatePicker) {
-                DateSelector(
-                    originalDate = date,
-                    onDateSelected = { date = it },
-                    onDismiss = { showDatePicker = false }
-                )
-            }
-        }
+        EditReceipt(
+            oldName = name,
+            oldAmount = amount,
+            oldDate = date,
+            oldCategory = category,
+            onNameChange = { name = it },
+            onAmountChange = { amount = it },
+            onDateChange = { date = it },
+            onCategoryChange = { category = it }
+        )
         Row(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -136,6 +91,80 @@ fun ReceiptInformationInput(navController: NavController, activityViewModel: New
             ) {
                 Text("Save")
             }
+        }
+    }
+}
+
+
+@Composable
+fun EditReceipt(
+    oldName: String,
+    oldAmount: Double,
+    oldDate: LocalDate,
+    oldCategory: String,
+    onNameChange: (String) -> Unit,
+    onAmountChange: (Double) -> Unit,
+    onDateChange: (LocalDate) -> Unit,
+    onCategoryChange: (String) -> Unit
+) {
+    var showDatePicker by remember { mutableStateOf(false) }
+    var validAmount by remember { mutableStateOf(true) }
+    var amountText by remember { mutableStateOf(if (oldAmount == 0.0) "" else oldAmount.toString()) }
+
+    var name by remember { mutableStateOf(oldName) }
+    var date by remember { mutableStateOf(oldDate) }
+    var category by remember { mutableStateOf(oldCategory) }
+
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+        OutlinedTextField(
+            value = name,
+            label = { Text("Name") },
+            singleLine = true,
+            onValueChange = { onNameChange(it); name = it },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+        OutlinedTextField(
+            value = category,
+            label = { Text("Category") },
+            singleLine = true,
+            onValueChange = { onCategoryChange(it); category = it },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
+        OutlinedTextField(
+            value = amountText,
+            label = { Text("Amount") },
+            prefix = { Text("$") },
+            placeholder = { Text("0.00") },
+            onValueChange = {
+                try { onAmountChange(if (it == "") 0.0 else it.toDouble()); validAmount = true; amountText = it }
+                catch (e: NumberFormatException) { validAmount = false } },
+            isError = !validAmount,
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.weight(1f)
+        )
+        OutlinedTextField(
+            value = date.format(DATE_FORMAT),
+            onValueChange = { },
+            label = { Text("Date") },
+            readOnly = true,
+            trailingIcon = {
+                IconButton(onClick = { showDatePicker = !showDatePicker }) {
+                    Icon(imageVector = Icons.Default.DateRange, contentDescription = "Select date")
+                }
+            },
+            modifier = Modifier.weight(1f)
+        )
+        if (showDatePicker) {
+            DateSelector(
+                originalDate = date,
+                onDateSelected = { onDateChange(it); date = it },
+                onDismiss = { showDatePicker = false }
+            )
         }
     }
 }

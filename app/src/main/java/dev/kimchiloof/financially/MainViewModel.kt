@@ -17,6 +17,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val amountSpent = MutableLiveData(sharedPreferences.getFloat("amount_spent", 0.0f).toDouble())
 
     suspend fun deleteReceipt(receipt: Receipt) { dao.delete(receipt) }
+    suspend fun insertReceipt(receipt: Receipt) { dao.insert(receipt) }
+    suspend fun updateReceipt(receipt: Receipt) { dao.update(receipt) }
     fun getAllReceipts() = dao.getAllReceipts()
     fun getReceipt(id: Int) = dao.getReceipt(id)
     fun getFilteredReceipts(

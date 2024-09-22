@@ -12,15 +12,15 @@ data class Receipt(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "name")
-    val name: String,
+    var name: String,
     @ColumnInfo(name = "date", typeAffinity = ColumnInfo.INTEGER)
-    val date: LocalDate,
+    var date: LocalDate,
     @ColumnInfo(name = "date_created", typeAffinity = ColumnInfo.INTEGER)
     val dateCreated: LocalDate,
     @ColumnInfo(name = "image", typeAffinity = ColumnInfo.TEXT)
     val image: File,
     @ColumnInfo(name = "amount")
-    val amount: Double,
+    var amount: Double,
     @ColumnInfo(name = "category")
-    val category: String
+    var category: String
 )

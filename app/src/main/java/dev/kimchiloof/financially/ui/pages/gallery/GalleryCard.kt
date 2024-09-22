@@ -1,5 +1,6 @@
 package dev.kimchiloof.financially.ui.pages.gallery
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -22,18 +27,23 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import dev.kimchiloof.financially.data.receipt.Receipt
-import dev.kimchiloof.financially.utils.Constants.Companion.DATE_FORMAT
-import dev.kimchiloof.financially.utils.Constants.UI.RADIUS
+import dev.kimchiloof.financially.utils.Constants
 
 @Composable
 fun GalleryCard(receipt: Receipt) {
     val context = LocalContext.current
 
+    var openDetailModal by remember { mutableStateOf(false) }
+    if (openDetailModal) {
+        DetailModal(receipt.id, onDismiss = { openDetailModal = false })
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp, 8.dp),
-        shape = RoundedCornerShape(RADIUS.L.dp),
+            .padding(16.dp, 8.dp)
+            .clickable { openDetailModal = true },
+        shape = RoundedCornerShape(Constants.UI.RADIUS.L.dp),
         elevation = CardDefaults.elevatedCardElevation(8.dp)
     ) {
         Row (
@@ -45,7 +55,7 @@ fun GalleryCard(receipt: Receipt) {
             AsyncImage(
                 model = ImageRequest.Builder(context).data(receipt.image).build(),
                 contentDescription = "Captured image",
-                modifier = Modifier.fillMaxWidth(0.5f).clip(RoundedCornerShape(RADIUS.M.dp))
+                modifier = Modifier.fillMaxWidth(0.5f).clip(RoundedCornerShape(Constants.UI.RADIUS.M.dp))
             )
             Column (
                 verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -54,7 +64,7 @@ fun GalleryCard(receipt: Receipt) {
                 HorizontalDivider(thickness = 1.dp, color = Color.White, modifier = Modifier.padding(0.dp, 4.dp))
                 Text(text = receipt.category)
                 Text(text = "$ " + receipt.amount.toString())
-                Text(text = receipt.date.format(DATE_FORMAT))
+                Text(text = receipt.date.format(Constants.DATE_FORMAT))
             }
         }
     }
