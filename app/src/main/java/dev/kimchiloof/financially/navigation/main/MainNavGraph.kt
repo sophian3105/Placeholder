@@ -1,41 +1,31 @@
 package dev.kimchiloof.financially.navigation.main
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.compose.runtime.rememberCoroutineScope
 import dev.kimchiloof.financially.navigation.Destination
-import dev.kimchiloof.financially.ui.pages.finances.FinancesScreen
-import dev.kimchiloof.financially.ui.pages.gallery.GalleryScreen
-import dev.kimchiloof.financially.ui.pages.home.HomeScreen
-import dev.kimchiloof.financially.utils.resetTo
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainNavGraph (
-    navHostController: NavHostController,
-    startDestination: Destination = Destination.Home
+    pagerState: PagerState,
+    destinations: Map<Destination.DestinationWithDisplay, @Composable () -> Unit>,
+    initialPageIndex: Int
 ) {
-    NavHost(
-        navController = navHostController,
-        startDestination = startDestination.route
-    ) {
-        composable(
-            route = Destination.Home.route
+    val coroutineScope = rememberCoroutineScope()
+    HorizontalPager(
+        beyondViewportPageCount = 1,
+        state = pagerState
+    ) { page ->
+        destinations.values.elementAt(page)()
+        BackHandler (
+            enabled = (destinations.keys.elementAt(page) != Destination.Home)
         ) {
-            HomeScreen()
-        }
-        composable(
-            route = Destination.Finances.route
-        ) {
-            BackHandler { navHostController.resetTo(Destination.Home) }
-            FinancesScreen()
-        }
-        composable(
-            route = Destination.Gallery.route
-        ) {
-            BackHandler { navHostController.resetTo(Destination.Home) }
-            GalleryScreen()
+            coroutineScope.launch {
+                pagerState.animateScrollToPage(initialPageIndex)
+            }
         }
     }
 }

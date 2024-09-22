@@ -9,14 +9,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
+import dev.kimchiloof.financially.navigation.Destination
 import dev.kimchiloof.financially.navigation.main.MainNavBar
 import dev.kimchiloof.financially.navigation.main.MainNavGraph
+import dev.kimchiloof.financially.ui.pages.finances.FinancesScreen
+import dev.kimchiloof.financially.ui.pages.gallery.GalleryScreen
+import dev.kimchiloof.financially.ui.pages.home.HomeScreen
 import dev.kimchiloof.financially.ui.pages.newReceiptFlow.camera.CameraButton
 import dev.kimchiloof.financially.ui.theme.FinanciallyTheme
 
@@ -26,10 +30,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FinanciallyTheme {
-                val navController = rememberNavController()
+                val initialPageIndex = 1
+                val navScreens: Map<Destination.DestinationWithDisplay, @Composable () -> Unit> = mapOf(
+                    Destination.Gallery to { GalleryScreen() },
+                    Destination.Home to { HomeScreen() },
+                    Destination.Finances to { FinancesScreen() },
+                )
+
+                val pagerState = rememberPagerState (initialPageIndex) { navScreens.size }
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    bottomBar = { MainNavBar(navController) },
+                    bottomBar = { MainNavBar(pagerState, navScreens.keys.toList()) },
                     floatingActionButton = { CameraButton { granted ->
                         if (granted) {
                             startActivity(
@@ -49,7 +60,7 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(paddingValues)
                     ) {
-                        MainNavGraph(navController)
+                        MainNavGraph(pagerState, navScreens, initialPageIndex)
                     }
                 }
             }
