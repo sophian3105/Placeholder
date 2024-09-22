@@ -1,6 +1,5 @@
 package dev.kimchiloof.financially.ui.pages.gallery
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,15 +47,10 @@ import java.time.LocalDate
 @Composable
 fun DetailModal(id: Int, onDismiss: () -> Unit, viewModel: MainViewModel = viewModel()) {
     val context = LocalContext.current
-    val receipt = viewModel.getReceipt(id).collectAsState(initial = null).value
+    val receipt = viewModel.getReceipt(id).collectAsState(initial = null).value ?: return
 
     var editMode by remember { mutableStateOf(false) }
     var saveNow by remember { mutableStateOf(false) }
-
-    if (receipt == null) {
-        Log.e("DetailScreen", "Receipt is null")
-        return
-    }
 
     Dialog (
         onDismissRequest = onDismiss,

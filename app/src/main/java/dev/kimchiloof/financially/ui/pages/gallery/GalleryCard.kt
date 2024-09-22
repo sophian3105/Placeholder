@@ -1,6 +1,6 @@
 package dev.kimchiloof.financially.ui.pages.gallery
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,15 +39,22 @@ fun GalleryCard(receipt: Receipt) {
     val context = LocalContext.current
 
     var openDetailModal by remember { mutableStateOf(false) }
+    var openDeleteModal by remember { mutableStateOf(false) }
     if (openDetailModal) {
         DetailModal(receipt.id, onDismiss = { openDetailModal = false })
+    }
+    if (openDeleteModal) {
+        DeleteModal(receipt.id, onDismiss = { openDeleteModal = false })
     }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp, 8.dp)
-            .clickable { openDetailModal = true },
+            .pointerInput(Unit) { detectTapGestures (
+                onTap = { openDetailModal = true },
+                onLongPress = { openDeleteModal = true }
+            ) },
         shape = RoundedCornerShape(Constants.UI.RADIUS.L.dp),
         elevation = CardDefaults.elevatedCardElevation(8.dp)
     ) {
